@@ -359,3 +359,25 @@ function athAmountCheck()
     $athlete = new athlete();
     return $athlete->checkIfAth();
 }
+
+//Permet de transformer les temps d'engagements sur le fichier Excel de strings vers des int ("1:26" -> 86)
+function formatSwimTime($str)
+{
+    $string = preg_replace('/[^0-9.,]+/', '', $str);
+    $time = 0;
+    if (strlen($string) > 2) {
+        $time = (int) $string[0] * 60;
+        if (is_numeric($string[1])) {
+            $time += (int) '' . $string[1] . $string[2] . '';
+        } else if ($string[1] == '.') {
+            $time = (int)$string[0] * 60 + (int)$string[2] * 10;
+        } else {
+            $time += (int) '' . $string[2] . $string[3] . '';
+        }
+    } else {
+        if ((int) $string > 60) {
+            $string = (int) $string % 60;
+        }
+    }
+    return $time;
+}
