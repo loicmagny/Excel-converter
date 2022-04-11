@@ -182,7 +182,6 @@ class laserRun extends dataBase
         lr.`time`,
         lr.`ath_id`,
         lr.`heat`,
-        lr.`fouls_id`,
         lr.`points` as points,
         lr.`arrival`,
         ath.`id` AS ath_id,

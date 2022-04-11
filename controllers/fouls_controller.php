@@ -9,10 +9,11 @@ function addFoulToAth($arg)
     return $athFouls->getLastEntry();
 }
 // Permet de récupérer le nombre de pénalité présentes en bdd
-function getSwimFouls()
+function getFouls($arg)
 {
     $fouls = new fouls();
-    return $fouls->getSwimFouls();
+    $fouls->setType($arg);
+    return $fouls->getFouls();
 }
 // Permet d'afficher les pénalités attribuées à l'athlète
 function getAthSwimFoul($arg)
@@ -20,6 +21,12 @@ function getAthSwimFoul($arg)
     $athFouls = new athFouls();
     $athFouls->setAth_id($arg);
     return $athFouls->getAthSwimFouls();
+}
+function getAthLRFoulList($arg)
+{
+    $athFouls = new athFouls();
+    $athFouls->setAth_id($arg);
+    return $athFouls->getAthLRFouls();
 }
 // Permet de retirer une pénalité à un athlète
 function removeAthFouls($arg)

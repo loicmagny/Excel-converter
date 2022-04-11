@@ -126,12 +126,10 @@ if ($(location).attr('href') == SWIMMING) {
     var athHeat = $(this).parent().parent().parent().prop('id');
     athHeat = athHeat.replace(/[^0-9.]/g, '');
     transformAddButton(id);
-    $('.tooltipped').tooltip(); // ajaxCall([
-    // 	'insertAthleteResult',
-    // 	1,
-    // 	[athTime, id, athHeat, athPoints, 0, 0]
-    // ]);
-    // $('#edit_' + id + '').click(function () {
+    ajaxCall(['insertAthleteResult', 1, [athTime, id, athHeat, athPoints, 0, 0]]);
+    M.toast({
+      html: 'Résultat sauvegardé'
+    }); // $('#edit_' + id + '').click(function () {
     // 	ajaxCall([
     // 		'editAthleteResult',
     // 		1,

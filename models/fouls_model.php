@@ -52,26 +52,36 @@ class Fouls extends database
     {
         $this->points = $points;
     }
-// Méthode pour récupérer les pénalités stockées en bdd
-    public function getSwimFouls()
+    // Méthode pour récupérer les pénalités stockées en bdd
+    public function getFouls()
     {
-        $query = 'SELECT `id`, `label`, `type`, `points` FROM ' . $this->tablename . ' WHERE `type` = 1 OR `type` = 0';
-        $getAllFouls = $this->db->query($query);
-        if (is_object($getAllFouls)) {
-            $foulsList = $getAllFouls->fetchAll(PDO::FETCH_ASSOC);
+        $query = 'SELECT
+        `id`,
+        `label`,
+        `type`,
+        `points`
+    FROM
+    ' . $this->tablename . '
+    WHERE
+        `type` = :type';
+        $foul = $this->db->prepare($query);
+        $foul->bindValue(':type', $this->type, PDO::PARAM_INT);
+        if ($foul->execute()) {
+            $foulResult = $foul->fetch(PDO::FETCH_ASSOC);
         }
-        return $foulsList;
+        return $foulResult;
     }
-// Méthode permettant de récupérer une seule pénalité via son id
-    public function getSwimFoulsById()
+    // Méthode permettant de récupérer une seule pénalité via son id
+    public function getFoulsById()
     {
-        $query = 'SELECT `id`, `label`, `type`, `points` FROM ' . $this->tablename . ' WHERE id = :id AND `type` = 1';
-        $swimFoul = $this->db->prepare($query);
-        $swimFoul->bindValue(':id', $this->id, PDO::PARAM_INT);
-        if ($swimFoul->execute()) {
-            $swimFoulResult = $swimFoul->fetch(PDO::FETCH_ASSOC);
+        $query = 'SELECT `id`, `label`, `type`, `points` FROM ' . $this->tablename . ' WHERE id = :id AND `type` = :type';
+        $foulById = $this->db->prepare($query);
+        $foulById->bindValue(':id', $this->id, PDO::PARAM_INT);
+        $foulById->bindValue(':type', $this->type, PDO::PARAM_INT);
+        if ($foulById->execute()) {
+            $foulByIdResult = $foulById->fetch(PDO::FETCH_ASSOC);
         }
-        return $swimFoulResult;
+        return $foulByIdResult;
     }
 
     function __destruct()

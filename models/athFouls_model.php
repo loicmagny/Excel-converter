@@ -71,7 +71,7 @@ class athFouls extends dataBase
 
         return $this;
     }
-// Méthode d'insertion dans la bdd
+    // Méthode d'insertion dans la bdd
     public function insertAthFouls()
     {
         $query = 'INSERT INTO ' . $this->tablename . '(`ath_id`, `fouls_id`) VALUES (:ath_id, :fouls_id)';
@@ -80,7 +80,7 @@ class athFouls extends dataBase
         $createAthleteFoulsResult->bindValue(':fouls_id', $this->fouls_id, PDO::PARAM_INT);
         $createAthleteFoulsResult->execute();
     }
-// Méthode pour lire les fautes d'un athlètes
+    // Méthode pour lire les fautes d'un athlètes
     public function getAthSwimFouls()
     {
         $query = 'SELECT
@@ -104,7 +104,8 @@ class athFouls extends dataBase
         ON
             fouls.`id` = athf.`fouls_id`
         WHERE
-            athf.`ath_id` = :ath_id';
+            athf.`ath_id` = :ath_id
+            AND fouls.`type` = 1 OR fouls.`type`= 0';
         $getAthFoul = $this->db->prepare($query);
         $getAthFoul->bindValue(':ath_id', $this->ath_id, PDO::PARAM_INT);
         if ($getAthFoul->execute()) {
@@ -112,7 +113,40 @@ class athFouls extends dataBase
         }
         return $getAthFoulResult;
     }
-// Méthode pour lire la dernière entrée en bdd
+
+    public function getAthLRFouls()
+    {
+        $query = 'SELECT
+        athf.`id`,
+        athf.`ath_id`,
+        athf.`fouls_id`,
+        ath.`first_name`,
+        ath.`last_name`,
+        ath.`club`,
+        ath.`gender`,
+        ath.`cat_id`,
+        fouls.`label`,
+        fouls.`type`,
+        fouls.`points`
+        FROM
+        ' . $this->tablename . ' AS athf
+        INNER JOIN `athletes` AS ath
+        ON
+            ath.id = athf.`ath_id`
+        INNER JOIN `fouls` AS fouls
+        ON
+            fouls.`id` = athf.`fouls_id`
+        WHERE
+            athf.`ath_id` = :ath_id
+            AND fouls.type = 2 OR fouls.type = 0';
+        $getAthFoul = $this->db->prepare($query);
+        $getAthFoul->bindValue(':ath_id', $this->ath_id, PDO::PARAM_INT);
+        if ($getAthFoul->execute()) {
+            $getAthFoulResult = $getAthFoul->fetchAll(PDO::FETCH_OBJ);
+        }
+        return $getAthFoulResult;
+    }
+    // Méthode pour lire la dernière entrée en bdd
     public function getLastEntry()
     {
         $query = 'SELECT

@@ -117,7 +117,7 @@ class Results extends database
 
         return $this;
     }
-// Méthode pour récupérer les résultats des garçons
+    // Méthode pour récupérer les résultats des garçons
     public function getBoysDatas($cat)
     {
         $query = 'SELECT
@@ -132,11 +132,9 @@ class Results extends database
         cat.`cat_name`,
         swi.`time`,
         swi.`heat`,
-        swi.`fouls`,
         swi.`points`,
         lr.`time` as lr_time,
         lr.`heat`,
-        lr.`fouls_id`,
         lr.`points` AS lr_points,
         lr.`arrival`
         FROM
@@ -158,7 +156,7 @@ class Results extends database
         }
         return $boysResultList;
     }
-// Idem mais pour les filles
+    // Idem mais pour les filles
     public function getGirlsDatas($cat)
     {
         $query = 'SELECT
@@ -173,11 +171,9 @@ class Results extends database
         cat.`cat_name`,
         swi.`time`,
         swi.`heat`,
-        swi.`fouls`,
         swi.`points`,
         lr.`time` as lr_time,
         lr.`heat`,
-        lr.`fouls_id`,
         lr.`points` AS lr_points,
         lr.`arrival`
         FROM
@@ -199,7 +195,7 @@ class Results extends database
         }
         return $girlsResultsList;
     }
-//Méthode pour enregistrer les résultats d'un athlete sur les 2 épreuves
+    //Méthode pour enregistrer les résultats d'un athlete sur les 2 épreuves
     public function insertGlobalAthResult()
     {
         $query = 'INSERT INTO `results`(`total`, `ath_id`, `swimPoints`, `lr_points`, `swimTime`, `lr_time`, `lr_handicap`) VALUES (:total, :ath_id, :swimPoints, :lr_points, :swimTime, :lr_time, :lr_handicap)';
@@ -213,7 +209,7 @@ class Results extends database
         $insertGlobalAthResult->bindValue(':lr_handicap', $this->lr_handicap, PDO::PARAM_STR);
         return $insertGlobalAthResult->execute();
     }
-// Méthode pour récupérer les résultats globaux d'un athlete
+    // Méthode pour récupérer les résultats globaux d'un athlete
     public function getAllAthResults($gender, $cat)
     {
         $query = 'SELECT
@@ -251,7 +247,7 @@ class Results extends database
         }
         return $getAthResultsList;
     }
-// Méthode pour vérifier si le résultat existe déjà
+    // Méthode pour vérifier si le résultat existe déjà
     public function checkIfValueExists()
     {
         $query = 'SELECT
@@ -267,7 +263,7 @@ class Results extends database
         }
         return $valueExistsResult;
     }
-// Méthode pour modifier la place d'un athlete sur les résultats finaux
+    // Méthode pour modifier la place d'un athlete sur les résultats finaux
     public function editPlace()
     {
         $query = 'UPDATE
