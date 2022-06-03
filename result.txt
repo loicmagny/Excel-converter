@@ -1,0 +1,556 @@
+<table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table><table>
+    <thead>
+      <tr>
+      <th class="center">Poste de tir</th>
+      <th class="center">Catégorie</th>
+      <th class="center">Nom</th>
+      <th class="center">Temps</th>
+      <th class="center">Points</th>
+      <th class="center"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+    
+    </tbody>
+  </table>

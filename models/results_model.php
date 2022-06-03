@@ -4,13 +4,8 @@ class Results extends database
 {
     private $id = 0;
     private $place = 0;
-    private $total = 0;
+    private $points = 0;
     private $ath_id = 0;
-    private $swimTime = 0;
-    private $lr_time = 0;
-    private $swimPoints = 0;
-    private $lr_points = 0;
-    private $lr_handicap = '';
     private $tablename = 'results';
 
     public function __construct()
@@ -40,17 +35,19 @@ class Results extends database
 
         return $this;
     }
-    public function getTotal()
+
+    public function getPoints()
     {
-        return $this->total;
+        return $this->points;
     }
 
-    public function setTotal($total)
+    public function setPoints($points)
     {
-        $this->total = $total;
+        $this->points = $points;
 
         return $this;
     }
+
     public function getAth_id()
     {
         return $this->ath_id;
@@ -62,61 +59,50 @@ class Results extends database
 
         return $this;
     }
-    public function getSwimTime()
+    public function getAllResults()
     {
-        return $this->swimTime;
+        $query = 'SELECT
+        res.`id`,
+        res.`place`,
+        res.`points`,
+        res.`ath_id`,
+        lr.`id`,
+        lr.`time`,
+        lr.`ath_id`,
+        lr.`heat`,
+        lr.`points` AS points,
+        ath.`id`,
+        ath.`first_name`,
+        ath.`last_name`,
+        ath.`club`,
+        ath.`cat_id`,
+        ath.`type_id`,
+        ath.`gender`,
+        ath.`lr_handicap`,
+        cat.`cat_id`,
+        cat.`lr_distance`,
+        cat.`lr_turns`,
+        cat.`lr_time`,
+        cat.`cat_name`
+    FROM
+        results AS res
+    INNER JOIN `laserrun` AS lr
+    ON
+        res.`ath_id` = lr.`ath_id`
+    INNER JOIN `categories` AS cat
+    ON
+        res.`ath_id` = cat.`cat_id`
+    INNER JOIN `athletes` AS ath
+    ON
+        res.`ath_id` = ath.id;';
+
+        $getAllResults = $this->db->query($query);
+        if (is_object($getAllResults)) {
+            $getAllResultsList = $getAllResults->fetchAll(PDO::FETCH_ASSOC);
+        }
+        return $getAllResultsList;
     }
 
-    public function setSwimTime($swimTime)
-    {
-        $this->swimTime = $swimTime;
-
-        return $this;
-    }
-    public function getLr_time()
-    {
-        return $this->lr_time;
-    }
-
-    public function setLr_time($lr_time)
-    {
-        $this->lr_time = $lr_time;
-
-        return $this;
-    }
-    public function getSwimPoints()
-    {
-        return $this->swimPoints;
-    }
-
-    public function setSwimPoints($swimPoints)
-    {
-        $this->swimPoints = $swimPoints;
-
-        return $this;
-    }
-    public function getLr_points()
-    {
-        return $this->lr_points;
-    }
-
-    public function setLr_points($lr_points)
-    {
-        $this->lr_points = $lr_points;
-
-        return $this;
-    }
-    public function getLr_handicap()
-    {
-        return $this->lr_handicap;
-    }
-
-    public function setLr_handicap($lr_handicap)
-    {
-        $this->lr_handicap = $lr_handicap;
-
-        return $this;
-    }
     // Méthode pour récupérer les résultats des garçons
     public function getBoysDatas($cat)
     {
@@ -198,15 +184,11 @@ class Results extends database
     //Méthode pour enregistrer les résultats d'un athlete sur les 2 épreuves
     public function insertGlobalAthResult()
     {
-        $query = 'INSERT INTO `results`(`total`, `ath_id`, `swimPoints`, `lr_points`, `swimTime`, `lr_time`, `lr_handicap`) VALUES (:total, :ath_id, :swimPoints, :lr_points, :swimTime, :lr_time, :lr_handicap)';
+        $query = 'INSERT INTO ' . $this->tablename . '(`place`, `points`, `ath_id`) VALUES (:place, :points, :ath_id)';
         $insertGlobalAthResult = $this->db->prepare($query);
-        $insertGlobalAthResult->bindValue(':total', $this->total, PDO::PARAM_INT);
+        $insertGlobalAthResult->bindValue(':place', $this->place, PDO::PARAM_INT);
+        $insertGlobalAthResult->bindValue(':points', $this->points, PDO::PARAM_INT);
         $insertGlobalAthResult->bindValue(':ath_id', $this->ath_id, PDO::PARAM_INT);
-        $insertGlobalAthResult->bindValue(':swimPoints', $this->swimPoints, PDO::PARAM_INT);
-        $insertGlobalAthResult->bindValue(':lr_points', $this->lr_points, PDO::PARAM_INT);
-        $insertGlobalAthResult->bindValue(':swimTime', $this->swimTime, PDO::PARAM_INT);
-        $insertGlobalAthResult->bindValue(':lr_time', $this->lr_time, PDO::PARAM_INT);
-        $insertGlobalAthResult->bindValue(':lr_handicap', $this->lr_handicap, PDO::PARAM_STR);
         return $insertGlobalAthResult->execute();
     }
     // Méthode pour récupérer les résultats globaux d'un athlete
@@ -214,12 +196,7 @@ class Results extends database
     {
         $query = 'SELECT
         res.`place`,
-        res.`total`,
-        res.`swimPoints`,
-        res.`lr_points`,
-        res.`swimTime`,
-        res.`lr_time`,
-        res.`lr_handicap`,
+        res.`points`,
         ath.`id` AS ath_id,
         ath.`first_name`,
         ath.`last_name`,
@@ -255,9 +232,9 @@ class Results extends database
         FROM
         ' . $this->tablename . '
         WHERE
-        ath_id = :ath_id';
+        id = :id';
         $valueExists = $this->db->prepare($query);
-        $valueExists->bindValue(':ath_id', $this->ath_id, PDO::PARAM_INT);
+        $valueExists->bindValue(':id', $this->id, PDO::PARAM_INT);
         if ($valueExists->execute()) {
             $valueExistsResult = $valueExists->fetchAll(PDO::FETCH_ASSOC);
         }

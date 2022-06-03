@@ -1,105 +1,173 @@
 if ($(location).attr('href') == LASERRUN) {
-	//Fonction pour récupérer les temps de natation des garcçons et le manipuler de manière à créer des séries + calculer les handicap start
+	ajaxCall(['countLRAth', 'athletes']);
+
+	//Fonction pour récupérer les temps de natation des garçons et le manipuler de manière à créer des séries + calculer les handicap start
 	// //Appelée depuis la fonction AjaxCall
 	function getStoredBoysTimes(datas) {
-		let splitted = splitAthletesByDist(datas);
-		for (i in splitted) {
-			for (j in splitted) {
-				splitted = calculateHandicapStart(splitted);
+		if (datas.length > 1) {
+			let splitted = splitAthletesByDist(datas);
+			for (i in splitted) {
+				for (j in splitted) {
+					splitted = calculateHandicapStart(splitted);
+				}
 			}
+			generateTriathleLaserRunBoard(splitted, 'Boy');
+			$('.collapsible').collapsible();
+			$('.boySec').focusout(function() {
+				let id = $(this).prop('id').replace(/[^0-9.]/g, '');
+				ajaxCall(['getAthCatDetails', 3, (x = id)]);
+			});
+			ajaxCall(['getLRSavedTimes', 2, 1]);
 		}
-		generateHTML(splitted, 'boy', 3);
-		$('.collapsible').collapsible();
-		$('.boySec').focusout(function () {
-			let id = $(this)
-				.prop('id')
-				.replace(/[^0-9.]/g, '');
-			ajaxCall(['getAthCatDetails', 3, (x = id)]);
-		});
-		ajaxCall(['getLRSavedTimes', 2, 1]);
 	}
+
+	function getStoredGirlsTimes(datas) {
+		if (datas.length > 1) {
+			let splitted = splitAthletesByDist(datas);
+			for (i in splitted) {
+				for (j in splitted) {
+					splitted = calculateHandicapStart(splitted);
+				}
+			}
+			generateTriathleLaserRunBoard(splitted, 'Girl');
+			$('.collapsible').collapsible();
+			$('.girlSec').focusout(function() {
+				let id = $(this).prop('id').replace(/[^0-9.]/g, '');
+				ajaxCall(['getAthCatDetails', 3, (x = id)]);
+			});
+			ajaxCall(['getLRSavedTimes', 2, 0]);
+		}
+	}
+
+	function displayLaserRunAth(datas, gender) {
+		if (datas.length > 1) {
+			// console.log('DATAS', datas);
+			if (datas.length > 20) {
+				console.log('plus');
+				generateLaserRunBoard(splitHeats(datas), gender);
+			} else if (datas.length < 20) {
+				console.log('moins');
+				generateLaserRunBoard(splitHeats(datas), gender);
+			}
+			$('.collapsible').collapsible();
+			$('.boySec').focusout(function() {
+				let id = $(this).prop('id').replace(/[^0-9.]/g, '');
+				ajaxCall(['getAthCatDetails', 3, (x = id)]);
+			});
+			$('.girlSec').focusout(function() {
+				let id = $(this).prop('id').replace(/[^0-9.]/g, '');
+				ajaxCall(['getAthCatDetails', 3, (x = id)]);
+			});
+
+			ajaxCall(['getLRSavedTimes', 2, 1]);
+		}
+	}
+
+	function splitHeats(datas) {
+		console.log('datas: ', datas);
+		if (datas.length > 20) {
+			let size = datas.length;
+			let x = 2;
+			for (let i = 1; i <= size; i++) {
+				if (size <= 20) {
+					break;
+				}
+				Math.ceil((size /= 2));
+				x++;
+			}
+			let splitted = dynamicMatrix(x, Math.ceil(size));
+			console.log(splitted);
+			console.log('size: ', Math.ceil(size), x);
+			for (let i = 0; i < splitted.length; i++) {
+				for (let j = 0; j < splitted[i].length; j++) {
+					if (j < splitted[i.length]) {
+						splitted[i][j] = datas[j];
+					} else {
+						splitted[i][j] = datas[parseInt(j + splitted.length * i)];
+					}
+				}
+			}
+
+			console.log(splitted);
+			return splitted;
+		} else {
+			let splitted = dynamicMatrix(1);
+			for (let i = 0; i < datas.length; i++) {
+				splitted[0][i] = datas[i];
+			}
+			console.log(splitted);
+			return splitted;
+		}
+	}
+
 	//Fonction pour récupérer les temps de natation des filles et le manipuler de manière à créer des séries + calculer les handicap start
 	// //Appelée depuis la fonction AjaxCall
-	function getStoredGirlsTimes(datas) {
-		let splitted = splitAthletesByDist(datas);
-		for (i in splitted) {
-			for (j in splitted) {
-				splitted = calculateHandicapStart(splitted);
-			}
-		}
-		generateHTML(splitted, 'girl', 3);
-		$('.collapsible').collapsible();
-		$('.girlSec').focusout(function () {
-			let id = $(this)
-				.prop('id')
-				.replace(/[^0-9.]/g, '');
-			ajaxCall(['getAthCatDetails', 3, (x = id)]);
-		});
-		ajaxCall(['getLRSavedTimes', 2, 0]);
-	}
+
 	// Gestion d'évènement click pour ajouter un garçon et ses données dans la bdd corresondante
 	// // A retravailler
-	$('#boysHeats').on('click', 'button', function (e) {
+	$('#boysHeats').on('click', 'button', function(e) {
 		let target = e.target.id;
+		let func = target.replace(/[0-9]/g, '');
 		let id = target.replace(/[^0-9.]/g, '');
-		$('#add_' + id + '').click(function () {
-			let athTime = minIntoSec(
-				'' +
-					$('#minutes_' + id + '').val() +
-					' ' +
-					$('#seconds_' + id + '').val() +
-					''
-			);
-			let athPoints = $('#lr_points_' + id + '').text();
-			let athHeat = $(this).parent().parent().parent().prop('id');
-			let athArrival = $('#arrival_' + id + '').val();
+		let athTime = minIntoSec(
+			'' +
+				$('#minutes_' + id + '').val() +
+				' ' +
+				$('#seconds_' + id + '').val() +
+				''
+		);
+		let athPoints = $('#lr_points_' + id + '').text();
+		let athHeat = $(this).parent().parent().parent().prop('id');
+		let athArrival = $('#arrival_' + id + '').val();
+		if (func == 'add_') {
 			ajaxCall([
 				'insertLRAthleteResult',
 				2,
 				[id, athTime, athPoints, athHeat, athArrival]
 			]);
-			transformAddButton(id);
-			$('.tooltipped').tooltip();
-		});
-		// $('#edit_' + id + '').click(function () {
-		// 	ajaxCall([
-		// 		'editAthleteResult',
-		// 		1,
-		// 		[id, athTime, athHeat, athPoints, arrival, 0, 1]
-		// 	]);
-		// });
+		} else if (func == 'edit_') {
+			ajaxCall([
+				'editAthLaserRunResults',
+				2,
+				[id, athTime, athPoints, athArrival]
+			]);
+		}
+
+		transformAddButton(id);
+		$('.tooltipped').tooltip();
 	});
+
 	// Gestion d'évènement click pour ajouter une fille et ses données dans la bdd correspondante
-	// // A retravailler
-	$('#girlsHeats').on('click', 'button', function (e) {
+	$('#girlsHeats').on('click', 'button', function(e) {
 		let target = e.target.id;
+		let func = target.replace(/[0-9]/g, '');
 		let id = target.replace(/[^0-9.]/g, '');
-		$('#add_' + id + '').click(function () {
-			let athTime = minIntoSec(
-				'' +
-					$('#minutes_' + id + '').val() +
-					' ' +
-					$('#seconds_' + id + '').val() +
-					''
-			);
-			let athPoints = $('#lr_points_' + id + '').text();
-			let athHeat = $(this).parent().parent().parent().prop('id');
-			let athArrival = $('#arrival_' + id + '').val();
+		let athTime = minIntoSec(
+			'' +
+				$('#minutes_' + id + '').val() +
+				' ' +
+				$('#seconds_' + id + '').val() +
+				''
+		);
+		let athPoints = $('#lr_points_' + id + '').text();
+		let athHeat = $(this).parent().parent().parent().prop('id');
+		let athArrival = $('#arrival_' + id + '').val();
+		if (func == 'add_') {
 			ajaxCall([
 				'insertLRAthleteResult',
 				2,
 				[id, athTime, athPoints, athHeat, athArrival]
 			]);
-			transformAddButton(id);
-			$('.tooltipped').tooltip();
-		});
-		// $('#edit_' + id + '').click(function () {
-		// 	ajaxCall([
-		// 		'editAthleteResult',
-		// 		1,
-		// 		[id, athTime, athHeat, athPoints, arrival, 0, 1]
-		// 	]);
-		// });
+		} else if (func == 'edit_') {
+			ajaxCall([
+				'editAthLaserRunResults',
+				2,
+				[id, athTime, athPoints, athArrival]
+			]);
+		}
+
+		transformAddButton(id);
+		$('.tooltipped').tooltip();
 	});
 	// Fonction pour soustraire le handicap start au temps final réalisé par l'athlète
 	function substractHandicap(time, id) {
@@ -176,14 +244,19 @@ if ($(location).attr('href') == LASERRUN) {
 			arrayStr
 		);
 	}
+
+	$('#modalSpace').focusout(function() {
+		console.log('focusout');
+	});
+
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//Appel des fonctions
 
 	//Garçons
 	ajaxCall(['getSavedTimes', 1, 1]);
-	// ajaxCall(['getLRAth', 1, 1]);
+	ajaxCall(['getLRAth', 1, 1]);
 
 	//Filles
 	ajaxCall(['getSavedTimes', 1, 0]);
-	// ajaxCall(['getLRAth', 1, 0]);
+	ajaxCall(['getLRAth', 1, 0]);
 }

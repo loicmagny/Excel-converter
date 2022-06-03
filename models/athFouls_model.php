@@ -1,6 +1,6 @@
 <?php
 
-class athFouls extends dataBase
+class athFoul extends dataBase
 {
     private $id = 0;
     private $ath_id = 0;
@@ -94,7 +94,7 @@ class athFouls extends dataBase
         ath.`cat_id`,
         fouls.`label`,
         fouls.`type`,
-        fouls.`points`
+        fouls.`seconds`
         FROM
         ' . $this->tablename . ' AS athf
         INNER JOIN `athletes` AS ath
@@ -127,7 +127,7 @@ class athFouls extends dataBase
         ath.`cat_id`,
         fouls.`label`,
         fouls.`type`,
-        fouls.`points`
+        fouls.`seconds`
         FROM
         ' . $this->tablename . ' AS athf
         INNER JOIN `athletes` AS ath
@@ -158,9 +158,11 @@ class athFouls extends dataBase
         ath.`club`,
         ath.`gender`,
         ath.`cat_id`,
+        swi.`points` as swiPts,
+        lr.`points` as lrPts,
         fouls.`label`,
         fouls.`type`,
-        fouls.`points`
+        fouls.`seconds`
         FROM
         ' . $this->tablename . ' AS athf
         INNER JOIN `athletes` AS ath
@@ -169,6 +171,10 @@ class athFouls extends dataBase
         INNER JOIN `fouls` AS fouls
         ON
             fouls.`id` = athf.`fouls_id`
+            INNER JOIN `swimming` AS swi
+        ON
+            swi.`ath_id` = athf.`ath_id`
+            INNER JOIN `laserrun` as lr ON lr.`ath_id` = athf.`ath_id`
         WHERE
             athf.`ath_id` = :ath_id ORDER BY athf.`id` DESC LIMIT 1';
         $getLastEntry = $this->db->prepare($query);
@@ -177,6 +183,27 @@ class athFouls extends dataBase
             $getLastEntryResult = $getLastEntry->fetch(PDO::FETCH_OBJ);
         }
         return $getLastEntryResult;
+    }
+
+    public function getFoulsType()
+    {
+        $query = 'SELECT
+        athf.`id`,
+        `fouls`.`id`,
+        `fouls`.`label`,
+        `fouls`.`type`,
+        `fouls`.`seconds`
+        FROM
+        ' . $this->tablename . ' as athf
+        INNER JOIN `fouls` ON `fouls`.id = athf.fouls_id
+        WHERE
+        athf.id = :id';
+        $getFoulsType = $this->db->prepare($query);
+        $getFoulsType->bindvalue(':id', $this->id, PDO::PARAM_INT);
+        if ($getFoulsType->execute()) {
+            $getFoulsTypeList = $getFoulsType->fetch(PDO::FETCH_OBJ);
+        }
+        return $getFoulsTypeList;
     }
 
     // Méthode pour supprimer la pénalité d'un athlète

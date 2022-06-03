@@ -9,7 +9,7 @@ if ($(location).attr('href') == SWIMMING) {
       sorted[x] = sortAthletes(datas[x]);
     }
 
-    generateHTML(sorted, 'boy', 2);
+    generateSwimmingBoard(sorted, 'boy');
     $('.collapsible').collapsible();
     ajaxCall(['getSavedTimes', 1, 1]);
     $('.boySec').focusout(function () {
@@ -26,7 +26,7 @@ if ($(location).attr('href') == SWIMMING) {
       sorted[x] = sortAthletes(datas[x]);
     }
 
-    generateHTML(sorted, 'girl', 2);
+    generateSwimmingBoard(sorted, 'girl');
     $('.collapsible').collapsible();
     ajaxCall(['getSavedTimes', 1, 0]);
     $('.girlSec').focusout(function () {
@@ -36,29 +36,6 @@ if ($(location).attr('href') == SWIMMING) {
   }; // Gestionnaire d'évènements pour, au clic, récupérer les infos de l'athlète (Fille ou garçon) de la div afin de les envoyer en bdd
 
 
-  // $('.addSwimResult').click(function(e) {
-  // 	let target = e.target.id;
-  // 	let id = target.replace(/[^0-9.]/g, '');
-  //
-  // 	let athTime =
-  // 		parseInt($('#minutes_' + id + '').val() * 60) +
-  // 		parseInt($('#seconds_' + id + '').val());
-  // 	let athPoints = $('#points_' + id + '').text();
-  // 	let athHeat = $(this).parent().parent().parent().prop('id');
-  // 	athHeat = athHeat.replace(/[^0-9.]/g, '');
-  // 	transformAddButton(id);
-  // 	$('.tooltipped').tooltip();
-  // 	if ($(this).hasClass('editResult')) {
-  // 		ajaxCall(['editAthleteTime', 1, [athTime, id]]);
-  // 		ajaxCall(['editAthleteResult', 1, [athPoints, id]]);
-  // 	} else {
-  // 		// ajaxCall([
-  // 		// 	'insertAthleteResult',
-  // 		// 	1,
-  // 		// 	[athTime, id, athHeat, athPoints, 0, 0]
-  // 		// ]);
-  // 	}
-  // });
   // Fonction pour séparer les athlètes en fonction des distances de natation (50, 100 ou 200m)
   var sortAthletes = function sortAthletes(obj) {
     var heats = dynamicMatrix(Math.ceil(obj.length / 5));
@@ -67,8 +44,7 @@ if ($(location).attr('href') == SWIMMING) {
     var l = 0;
 
     for (var i = 0; i < obj.length; i++) {
-      obj[i].swimTime = parseInt(obj[i].swimTime.replace(/\D/g, ''));
-
+      // obj[i].swimTime = parseInt(obj[i].swimTime.replace(/\D/g, ''));
       if (obj[i].swimTime >= 60) {
         obj[i].swimTime = '' + obj[i].swimTime;
       }
@@ -100,13 +76,13 @@ if ($(location).attr('href') == SWIMMING) {
     var target = e.target.id;
     var id = target.replace(/[^0-9.]/g, '');
     var fouls = ajaxCall(['getAthSwimFoul', 5, id]);
-    console.log(fouls);
     var athTime = parseInt($('#minutes_' + id + '').val() * 60) + parseInt($('#seconds_' + id + '').val());
     var athPoints = $('#points_' + id + '').text();
     var athHeat = $(this).parent().parent().parent().prop('id');
     athHeat = athHeat.replace(/[^0-9.]/g, '');
     transformAddButton(id);
     $('.tooltipped').tooltip();
+    console.log(athPoints);
     ajaxCall(['insertAthleteResult', 1, [athTime, id, athHeat, athPoints, 0, 1]]);
     M.toast({
       html: 'Résultat sauvegardé'

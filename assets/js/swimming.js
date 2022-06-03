@@ -5,7 +5,7 @@ if ($(location).attr('href') == SWIMMING) {
 		for (x in datas) {
 			sorted[x] = sortAthletes(datas[x]);
 		}
-		generateHTML(sorted, 'boy', 2);
+		generateSwimmingBoard(sorted, 'boy');
 		$('.collapsible').collapsible();
 
 		ajaxCall(['getSavedTimes', 1, 1]);
@@ -20,7 +20,7 @@ if ($(location).attr('href') == SWIMMING) {
 		for (x in datas) {
 			sorted[x] = sortAthletes(datas[x]);
 		}
-		generateHTML(sorted, 'girl', 2);
+		generateSwimmingBoard(sorted, 'girl');
 		$('.collapsible').collapsible();
 
 		ajaxCall(['getSavedTimes', 1, 0]);
@@ -34,7 +34,6 @@ if ($(location).attr('href') == SWIMMING) {
 		let target = e.target.id;
 		let id = target.replace(/[^0-9.]/g, '');
 		let fouls = ajaxCall(['getAthSwimFoul', 5, id]);
-		console.log(fouls);
 		let athTime =
 			parseInt($('#minutes_' + id + '').val() * 60) +
 			parseInt($('#seconds_' + id + '').val());
@@ -43,6 +42,7 @@ if ($(location).attr('href') == SWIMMING) {
 		athHeat = athHeat.replace(/[^0-9.]/g, '');
 		transformAddButton(id);
 		$('.tooltipped').tooltip();
+		console.log(athPoints)
 		ajaxCall([
 			'insertAthleteResult',
 			1,
@@ -83,29 +83,6 @@ if ($(location).attr('href') == SWIMMING) {
 		// 	]);
 		// });
 	});
-	// $('.addSwimResult').click(function(e) {
-	// 	let target = e.target.id;
-	// 	let id = target.replace(/[^0-9.]/g, '');
-	//
-	// 	let athTime =
-	// 		parseInt($('#minutes_' + id + '').val() * 60) +
-	// 		parseInt($('#seconds_' + id + '').val());
-	// 	let athPoints = $('#points_' + id + '').text();
-	// 	let athHeat = $(this).parent().parent().parent().prop('id');
-	// 	athHeat = athHeat.replace(/[^0-9.]/g, '');
-	// 	transformAddButton(id);
-	// 	$('.tooltipped').tooltip();
-	// 	if ($(this).hasClass('editResult')) {
-	// 		ajaxCall(['editAthleteTime', 1, [athTime, id]]);
-	// 		ajaxCall(['editAthleteResult', 1, [athPoints, id]]);
-	// 	} else {
-	// 		// ajaxCall([
-	// 		// 	'insertAthleteResult',
-	// 		// 	1,
-	// 		// 	[athTime, id, athHeat, athPoints, 0, 0]
-	// 		// ]);
-	// 	}
-	// });
 
 	// Fonction pour séparer les athlètes en fonction des distances de natation (50, 100 ou 200m)
 	function sortAthletes(obj) {
@@ -114,7 +91,7 @@ if ($(location).attr('href') == SWIMMING) {
 		let k = 0;
 		let l = 0;
 		for (let i = 0; i < obj.length; i++) {
-			obj[i].swimTime = parseInt(obj[i].swimTime.replace(/\D/g, ''));
+			// obj[i].swimTime = parseInt(obj[i].swimTime.replace(/\D/g, ''));
 			if (obj[i].swimTime >= 60) {
 				obj[i].swimTime = '' + obj[i].swimTime;
 			}

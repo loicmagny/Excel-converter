@@ -2,12 +2,8 @@ $(document).ready(function() {
 	materializeDOMFunc();
 });
 // Fonction permettant d'afficher les différents éléments du DOM nécéssaires au bon fonctionnement et à l'affichage correct des données
-// Mode 1 -> Tableau des engagés (board.js)
-// Mode 2 -> Tableau des séries de natation (swimming.js)
-// Mode 3 -> Tableau des séries de combiné (laserRun.js)
-// Mode 4 -> Tableau des résultats (results.js)
-function generateHTML(data, gender, mode) {
-	if (mode === 1) {
+function generateIndexBoard(data) {
+	if (data.length > 1) {
 		for (x in data) {
 			data[x].swimTime = secIntoMin(data[x].swimTime);
 			$('#athBoard').append(
@@ -27,7 +23,7 @@ function generateHTML(data, gender, mode) {
 					'<div class="col s4">' +
 					'    <button class=" btn tooltipped btn-floating btn-large waves-effect waves-light btn-small red deleteAth" data-position="top" data-tooltip="Supprimer" ><i  id="deleteAth_' +
 					data[x].id +
-					'" class="material-icons deleteAth">delete</i>' +
+					'" class="material-icons ">delete</i>' +
 					'</div>' +
 					'</div>' +
 					'</td>' +
@@ -70,7 +66,11 @@ function generateHTML(data, gender, mode) {
 					'</tr>'
 			);
 		}
-	} else if (mode == 2) {
+	}
+}
+
+function generateSwimmingBoard(data, gender) {
+	if (data.length > 1) {
 		let k = 1;
 		let l = 1;
 		for (let i = 0; i < data.length; i++) {
@@ -185,11 +185,11 @@ function generateHTML(data, gender, mode) {
 							'">' +
 							'<div class="row">' +
 							'<div class="col offset-s2 s4">' +
-							'<a class="btn-floating waves-effect waves-light orange btn tooltipped modal-trigger" id="fouls_' +
+							'<a class="btn-floating waves-effect waves-light orange btn tooltipped modal-trigger"  href="#foulsModal_' +
 							data[i][j][x]['id'] +
-							'" href="#foulsModal_' +
+							'"data-position="right" data-tooltip="Pénalités"><i class="material-icons addFouls" id="fouls_' +
 							data[i][j][x]['id'] +
-							'"data-position="right" data-tooltip="Pénalités"><i class="material-icons addFouls">flag</i></a>' +
+							'">flag</i></a>' +
 							'</div>' +
 							'<div class="col s2">' +
 							'<button class="btn-floating waves-effect waves-light green btn tooltipped addSwimResult" data-position="right" data-tooltip="Sauvegarder"' +
@@ -244,6 +244,7 @@ function generateHTML(data, gender, mode) {
 							'<div class="collection" id="athFoulsList_' +
 							data[i][j][x]['id'] +
 							'">' +
+							'<span>Liste des Pénalités: </span>' +
 							'</div>' +
 							'</div>' +
 							'</div>' +
@@ -252,25 +253,27 @@ function generateHTML(data, gender, mode) {
 							'<div class="modal-footer blue-grey darken-1">' +
 							'<div class="row">' +
 							'<div class="col s4">' +
-							'<button class="btn waves-effect waves-light orange forfeit" id="foulsValidate_' +
+							'<button class="btn waves-effect waves-light orange forfeit" id="foulsAbandon_' +
 							data[i][j][x]['id'] +
 							'">Forfait' +
 							'<i class="material-icons right">send</i>' +
 							'</button>' +
 							'</div>' +
 							'<div class="col s4">' +
-							'<button class="btn waves-effect waves-light red abandon" id="foulsValidate_' +
+							'<button class="btn waves-effect waves-light red abandon" id="foulsDelete_' +
 							data[i][j][x]['id'] +
 							'">Abandon / Disqual°' +
 							'<i class="material-icons right">cancel</i>' +
 							'</button>' +
 							'</div>' +
 							'<div class="col s4">' +
-							'<button class="btn waves-effect waves-light green validate" id="foulsValidate_' +
+							'<a class="btn waves-effect waves-light green validate hover foulValidate" id="foulsValidate_' +
 							data[i][j][x]['id'] +
 							'">Valider' +
-							'<i class="material-icons right">send</i>' +
-							'</button>' +
+							'<i class="material-icons right foulValidate" id="foulsValidate_' +
+							data[i][j][x]['id'] +
+							'">send</i>' +
+							'</a>' +
 							'</div>' +
 							'</div>' +
 							'</div>' +
@@ -288,11 +291,238 @@ function generateHTML(data, gender, mode) {
 				$('.modal').modal();
 			}
 		}
-	} else if (mode == 3) {
+	}
+}
+
+function generateLaserRunBoard(data, gender) {
+	let l = 1;
+	let k = 1;
+	for (let i = 1; i < data.length + 1; i++) {
+		$('#' + gender + 'sHeats').append(
+			'<li>' +
+				'<div class="collapsible-header heat" id="heat_' +
+				i +
+				'_' +
+				gender +
+				's"><i class="material-icons"><img src="https://img.icons8.com/ios-glyphs/24/000000/male.png"/></i>Série ' +
+				i +
+				' -&nbsp; <span id="' +
+				gender +
+				'sHeatDistance' +
+				i +
+				'"> </span></div>' +
+				'<div class="collapsible-body" id="heat_' +
+				i +
+				'_' +
+				gender +
+				's_content">' +
+				'<table id="' +
+				gender +
+				'sTable_' +
+				i +
+				'">' +
+				'<thead>' +
+				'<tr>' +
+				'<th class="center">Poste de tir</th>' +
+				'<th class="center">Catégorie</th>' +
+				'<th class="center">Nom</th>' +
+				'<th class="center">Temps</th>' +
+				'<th class="center">Points</th>' +
+				'<th class="center" id="actions' +
+				'">Actions</th>' +
+				'</tr>' +
+				'</thead>' +
+				'<tbody id="' +
+				gender +
+				'sTable_' +
+				i +
+				'_content">' +
+				'</tbody>' +
+				'</table>' +
+				'</div>' +
+				'</li>' +
+				'</ul>'
+		);
+	}
+	for (let j = 0; j < data.length; j++) {
+		for (let m = 0; m < data[j].length; m++) {
+			$('#' + gender + 'sTable_' + (j + 1) + '_content').append(
+				'<tr>' +
+					'<form class="col s12">' +
+					'<td class="center">' +
+					'<div class="input-field  col offset-s2 col s7">' +
+					'<input class="center ' +
+					gender +
+					'Line" id="line' +
+					data[j][m]['id'] +
+					'" name="line' +
+					data[j][m]['id'] +
+					'" type="text" class="validate" value="' +
+					k +
+					'">' +
+					'<label class="active" for="line' +
+					data[j][m]['id'] +
+					'">Poste de tir</label>' +
+					'</div>' +
+					'</td>' +
+					'<td class="center">' +
+					data[j][m]['cat_name'] +
+					'</td>' +
+					'<td class="center">' +
+					data[j][m]['first_name'] +
+					' ' +
+					data[j][m]['last_name'] +
+					'</td>' +
+					'<td class="center">' +
+					'<div class="input-field  col offset-s2 col s7">' +
+					'<input class="center ' +
+					gender +
+					'Min" id="minutes_' +
+					data[j][m]['id'] +
+					'" name="minutes_' +
+					data[j][m]['id'] +
+					'" type="text" class="validate">' +
+					'<label for="minutes_' +
+					data[j][m]['id'] +
+					'">Minutes</label>' +
+					'</div>' +
+					'<div class="input-field  col offset-s2 col s7">' +
+					'<input class="center ' +
+					gender +
+					'Sec" id="seconds_' +
+					data[j][m]['id'] +
+					'" name="seconds_' +
+					data[j][m]['id'] +
+					'" type="text" class="validate">' +
+					'<label for="seconds_' +
+					data[j][m]['id'] +
+					'">Secondes</label>' +
+					'</div>' +
+					'</td>' +
+					'<td class="center" id="lr_points_' +
+					data[j][m]['id'] +
+					'">0</td>' +
+					'<td class="center" id="actions_' +
+					data[j][m]['id'] +
+					'">' +
+					'<div class="row">' +
+					'<div class="col offset-s2 s4">' +
+					'<a class="btn-floating waves-effect waves-light orange btn tooltipped modal-trigger"  href="#foulsModal_' +
+					data[j][m]['id'] +
+					'"data-position="right" data-tooltip="Pénalités"><i class="material-icons addFouls" id="fouls_' +
+					data[j][m]['id'] +
+					'">flag</i></a>' +
+					'</div>' +
+					'<div class="col s2">' +
+					'<button class="btn-floating waves-effect waves-light green btn tooltipped addSwimResult" data-position="right" data-tooltip="Sauvegarder"' +
+					'value="add_' +
+					data[j][m]['id'] +
+					'" ><i id="add_' +
+					data[j][m]['id'] +
+					'" class="material-icons">add</i></button>' +
+					'</div>' +
+					'</div>' +
+					'</td>' +
+					'</form>' +
+					'</tr>'
+			);
+			k++;
+			$('#modalSpace').append(
+				'<div id="foulsModal_' +
+					data[j][m]['id'] +
+					'" class="modal modal-fixed-footer blue-grey darken-1 white-text">' +
+					'<div class="modal-content container">' +
+					'<h4 class="center">Fautes</h4>' +
+					'<div class="card-content ">' +
+					'<span class="card-title">' +
+					data[j][m]['last_name'] +
+					' ' +
+					data[j][m]['first_name'] +
+					'</span>' +
+					'<div class="row">' +
+					'<div class="input-field col s12">' +
+					'<select id="foulSelect_' +
+					data[j][m]['id'] +
+					'">' +
+					'<option value="" selected disabled>Choose your option</option>' +
+					'</select>' +
+					'<label>Sélectionnez la faute</label>' +
+					'</div>' +
+					'<div class="row">' +
+					'<div>' +
+					'Pénalité appliquée : <span id="foulLabel_' +
+					data[j][m]['id'] +
+					'"></span>' +
+					'</div>' +
+					'</div>' +
+					'<div class="row">' +
+					'<div>' +
+					'Secondes retirées : <span id="foulPoints_' +
+					data[j][m]['id'] +
+					'"></span>' +
+					'</div>' +
+					'</div>' +
+					'<div class="row" >' +
+					'<div class="collection" id="athFoulsList_' +
+					data[j][m]['id'] +
+					'">' +
+					'<span>Liste des Pénalités: </span>' +
+					'</div>' +
+					'</div>' +
+					'</div>' +
+					'</div>' +
+					'</div>' +
+					'<div class="modal-footer blue-grey darken-1">' +
+					'<div class="row">' +
+					'<div class="col s4">' +
+					'<button class="btn waves-effect waves-light orange forfeit" id="foulsAbandon_' +
+					data[j][m]['id'] +
+					'">Forfait' +
+					'<i class="material-icons right">send</i>' +
+					'</button>' +
+					'</div>' +
+					'<div class="col s4">' +
+					'<button class="btn waves-effect waves-light red abandon" id="foulsDelete_' +
+					data[j][m]['id'] +
+					'">Abandon / Disqual°' +
+					'<i class="material-icons right">cancel</i>' +
+					'</button>' +
+					'</div>' +
+					'<div class="col s4">' +
+					'<a class="btn waves-effect waves-light green validate hover foulValidate" id="foulsValidate_' +
+					data[j][m]['id'] +
+					'">Valider' +
+					'<i class="material-icons right foulValidate" id="foulsValidate_' +
+					data[j][m]['id'] +
+					'">send</i>' +
+					'</a>' +
+					'</div>' +
+					'</div>' +
+					'</div>' +
+					'</div>'
+			);
+		}
+		$('#' + gender + 'sHeatDistance' + (j + 1) + '').html(
+			'' +
+				formatType(data[0][0]['type_id']) +
+				' - ' +
+				data[j].length +
+				' athlètes'
+		);
+		k = 1;
+	}
+
+	l++;
+	$('select').formSelect();
+	$('.modal').modal();
+}
+
+function generateTriathleLaserRunBoard(data, gender) {
+	if (data.length > 1) {
 		let l = 1;
 		let k = 1;
 		for (let i = 0; i < data.length; i++) {
-			$('#' + gender + 'sHeats').append(
+			$('#tri' + gender + 'sHeats').append(
 				'<li>' +
 					'<div class="collapsible-header heat" id="heat_' +
 					l +
@@ -328,7 +558,7 @@ function generateHTML(data, gender, mode) {
 					'">Actions</th>' +
 					'</tr>' +
 					'</thead>' +
-					'<tbody id="' +
+					'<tbody id="tri' +
 					gender +
 					'sTable_' +
 					l +
@@ -340,7 +570,7 @@ function generateHTML(data, gender, mode) {
 					'</ul>'
 			);
 			for (let j = 0; j < data[i].length; j++) {
-				$('#' + gender + 'sTable_' + l + '_content').append(
+				$('#tri' + gender + 'sTable_' + l + '_content').append(
 					'<tr>' +
 						'<form class="col s12">' +
 						'<td class="center">' +
@@ -348,91 +578,91 @@ function generateHTML(data, gender, mode) {
 						'<input class="center ' +
 						gender +
 						'Line" id="line' +
-						data[i][j]['ath_id'] +
+						data[0][j]['ath_id'] +
 						'" name="line' +
-						data[i][j]['ath_id'] +
+						data[0][j]['ath_id'] +
 						'" type="text" class="validate" value="' +
 						k +
 						'">' +
 						'<label class="active" for="line' +
-						data[i][j]['ath_id'] +
+						data[0][j]['ath_id'] +
 						'">Poste de tir</label>' +
 						'</div>' +
 						'</td>' +
 						'<td class="center">' +
-						data[i][j]['cat_name'] +
+						data[0][j]['cat_name'] +
 						'</td>' +
 						'<td class="center">' +
-						data[i][j]['first_name'] +
+						data[0][j]['first_name'] +
 						' ' +
-						data[i][j]['last_name'] +
+						data[0][j]['last_name'] +
 						'</td>' +
 						'<td class="center">' +
 						'<div class="input-field  col offset-s2 col s7">' +
 						'<input class="center ' +
 						gender +
 						'Min" id="minutes_' +
-						data[i][j]['ath_id'] +
+						data[0][j]['ath_id'] +
 						'" name="minutes_' +
-						data[i][j]['ath_id'] +
+						data[0][j]['ath_id'] +
 						'" type="text" class="validate">' +
 						'<label for="minutes_' +
-						data[i][j]['ath_id'] +
+						data[0][j]['ath_id'] +
 						'">Minutes</label>' +
 						'</div>' +
 						'<div class="input-field  col offset-s2 col s7">' +
 						'<input class="center ' +
 						gender +
 						'Sec" id="seconds_' +
-						data[i][j]['ath_id'] +
+						data[0][j]['ath_id'] +
 						'" name="seconds_' +
-						data[i][j]['ath_id'] +
+						data[0][j]['ath_id'] +
 						'" type="text" class="validate">' +
 						'<label for="seconds_' +
-						data[i][j]['ath_id'] +
+						data[0][j]['ath_id'] +
 						'">Secondes</label>' +
 						'</div>' +
 						'</td>' +
 						'<td class="center" id="lr_points_' +
-						data[i][j]['ath_id'] +
+						data[0][j]['ath_id'] +
 						'">0</td>' +
 						'<td class="center" id="handicap_' +
-						data[i][j]['ath_id'] +
+						data[0][j]['ath_id'] +
 						'">' +
-						data[i][j]['lr_handicap'] +
+						data[0][j]['lr_handicap'] +
 						'</td>' +
 						'<td class="center" id="arrivalInput_' +
-						data[i][j]['ath_id'] +
+						data[0][j]['ath_id'] +
 						'">' +
 						'<div class="input-field col s8 offset-s3">' +
 						'<input class="center ' +
 						gender +
 						'arrival" id="arrival_' +
-						data[i][j]['ath_id'] +
+						data[0][j]['ath_id'] +
 						'" name="arrival_' +
-						data[i][j]['ath_id'] +
+						data[0][j]['ath_id'] +
 						'" type="text" class="validate">' +
 						'<label for="arrival_' +
-						data[i][j]['ath_id'] +
+						data[0][j]['ath_id'] +
 						'">Place d\'arrivée</label>' +
 						'</div></td>' +
 						'<td class="center" id="actions_' +
-						data[i][j]['ath_id'] +
+						data[0][j]['ath_id'] +
 						'">' +
 						'<div class="row">' +
 						'<div class="col offset-s2 s4">' +
 						'<a class="btn-floating waves-effect waves-light orange btn tooltipped modal-trigger" id="fouls_' +
-						data[i][j]['ath_id'] +
+						data[0][j]['ath_id'] +
 						'" href="#foulsModal_' +
-						data[i][j]['ath_id'] +
+						data[0][j]['ath_id'] +
 						'"data-position="right" data-tooltip="Pénalités"><i class="material-icons addFouls">flag</i></a>' +
 						'</div>' +
 						'<div class="col s2">' +
 						'<button class="btn-floating waves-effect waves-light green btn tooltipped addSwimResult" data-position="right" data-tooltip="Sauvegarder"' +
 						'value="add_' +
-						data[i][j]['ath_id'] +
+						data[0][j]['ath_id'] +
 						'" ><i id="add_' +
-						data[i][j]['ath_id'] +
+						data[0][j]['ath_id'] +
 						'" class="material-icons">add</i></button>' +
 						'</div>' +
 						'</div>' +
@@ -514,53 +744,61 @@ function generateHTML(data, gender, mode) {
 				);
 			}
 			$('#' + gender + 'sHeatDistance' + l + '').html(
-				'' + data[i][0]['lr_distance'] + 'm'
+				'' +
+					data[0][j]['type_id'] +
+					data[0][j]['lr_distance'] +
+					'm - ' +
+					(parseInt(data.length) + parseInt(1)) +
+					'personnes'
 			);
 			k = 1;
 			l++;
 			$('select').formSelect();
 			$('.modal').modal();
 		}
-	} else if (mode == 4) {
+	}
+}
+
+function generateResultsBoard(data, gender) {
+	if (Object.keys(data).length > 1) {
 		let l = 1;
 		for (let i = 0; i < Object.keys(data).length; i++) {
 			$('#' + gender + 'sRes').append(
 				'<li>' +
 					'<div class="collapsible-header heat" id="heat_' +
-					l +
+					i +
 					'_' +
 					gender +
 					's"><i class="material-icons"><img src="https://img.icons8.com/ios-glyphs/24/000000/male.png"/></i>' +
-					data[i][0]['cat_name'] +
+					data[i][0].cat_name +
 					' <span id="' +
 					gender +
 					'sHeatDistance' +
-					l +
+					i +
 					'"> </span></div>' +
 					'<div class="collapsible-body" id="heat_' +
-					l +
+					i +
 					'_' +
 					gender +
 					's_content">' +
 					'<table id="' +
 					gender +
 					'sTable_' +
-					l +
+					i +
 					'">' +
 					'<thead>' +
 					'<tr>' +
 					'<th class="center">Place</th>' +
 					'<th class="center">Club</th>' +
 					'<th class="center">Nom</th>' +
-					'<th class="center">Natation</th>' +
 					'<th class="center">Laser Run</th>' +
-					'<th class="center">Total</th>' +
+					'<th class="center">Points</th>' +
 					'</tr>' +
 					'</thead>' +
 					'<tbody id="' +
 					gender +
 					'sTable_' +
-					l +
+					i +
 					'_content">' +
 					'</tbody>' +
 					'</table>' +
@@ -570,23 +808,16 @@ function generateHTML(data, gender, mode) {
 			);
 
 			for (let x = 0; x < Object.keys(data[i]).length; x++) {
-				$('#' + gender + 'sTable_' + l + '_content').append(
+				$('#' + gender + 'sTable_' + i + '_content').append(
 					'<tr>' +
 						'<form class="col s12">' +
 						'<td class="center">' +
 						'<div class="input-field col s6 offset-s3">' +
-						'<input class="center ' +
-						gender +
-						'Spot" id="spot' +
-						data[i][x].ath_id +
-						'" name="spot' +
+						'<span class="active" for="spot' +
 						data[i][x].id +
-						'" type="text" class="validate" value="' +
-						data[i][x].place +
 						'">' +
-						'<label class="active" for="spot' +
-						data[i][x].id +
-						'">Place</label>' +
+						(x + 1) +
+						'</span>' +
 						'</div>' +
 						'</td>' +
 						'<td class="center">' +
@@ -599,45 +830,28 @@ function generateHTML(data, gender, mode) {
 						'</td>' +
 						'<td class="center">' +
 						'<div class="col s12">' +
-						secIntoMin(data[i][x].swimTime) +
-						'</div>' +
-						'<div class="col s12">' +
-						parseInt(data[i][x].swimPoints) +
-						'</div>' +
-						'</td>' +
-						'<td class="center">' +
-						'<div class="col s12">' +
-						secIntoMin(parseInt(data[i][x].lr_time)) +
-						' (' +
-						data[i][x].lr_handicap +
-						')' +
-						'</div>' +
-						'<div class="col s12">' +
-						parseInt(data[i][x].lr_points) +
+						secIntoMin(parseInt(data[i][x].time)) +
 						'</div>' +
 						'</td>' +
 						'<td class="center" id="points_' +
 						data[i][x].id +
 						'">' +
-						parseInt(data[i][x].total) +
+						parseInt(data[i][x].points) +
 						'</td>' +
 						'</form>' +
 						'</tr>'
 				);
-				k++;
 			}
-			k = 1;
-			l++;
 		}
-		$('.collapsible').collapsible();
-		$('.tooltipped').tooltip();
+		l++;
 	}
-	return true;
+	$('.collapsible').collapsible();
+	$('.tooltipped').tooltip();
 }
+
 // Fonction permettant de modifier l'affichage du tableau des engagés (board.js) en fonction des checkboxes cochées
 function generationSearchDisplay(datas, mode) {
 	$('#athBoard').empty();
-	console.log(datas);
 	if (mode == 0) {
 		for (x in datas) {
 			$('#athBoard').append(
@@ -815,17 +1029,17 @@ function generationSearchDisplay(datas, mode) {
 				'<ul class="collapsible" id="sexList">' +
 					'<li>' +
 					'<div class="collapsible-header" id="cat_' +
-					datas[x][0].cat_id +
+					genderStrtoInt(datas[x][0].gender) +
 					'"><i class="material-icons"><img src="https://img.icons8.com/ios-glyphs/24/000000/male.png"/></i>' +
 					datas[x][0].gender +
 					' - ' +
 					datas[x].length +
 					' athlètes</div>' +
 					'<div class="collapsible-body" id="cat_' +
-					datas[x][0].cat_id +
+					genderStrtoInt(datas[x][0].gender) +
 					'">' +
 					'<table id="athTable_' +
-					datas[x][0].cat_id +
+					genderStrtoInt(datas[x][0].gender) +
 					'">' +
 					'<thead>' +
 					'<tr>' +
@@ -840,7 +1054,7 @@ function generationSearchDisplay(datas, mode) {
 					'</tr>' +
 					'</thead>' +
 					'<tbody id="athTable_' +
-					datas[x][0].cat_id +
+					genderStrtoInt(datas[x][0].gender) +
 					'_content">' +
 					'</tbody>' +
 					'</table>' +
@@ -852,10 +1066,11 @@ function generationSearchDisplay(datas, mode) {
 		}
 
 		$('.collapsible').collapsible();
-
 		for (i in datas) {
 			for (let j = 0; j < datas[i].length; j++) {
-				$('#athTable_' + datas[i][0].cat_id + '_content').append(
+				$(
+					'#athTable_' + genderStrtoInt(datas[i][0].gender) + '_content'
+				).append(
 					'<tr id="athBoard_' +
 						x +
 						'_content">' +
@@ -1097,19 +1312,19 @@ function transformAddButton(id) {
 	$('#actions_' + id + '').append(
 		'<div class="row">' +
 			'<div class="col offset-s2 s4">' +
-			'<a class="btn-floating waves-effect waves-light orange btn tooltipped addFouls modal-trigger" id="fouls_' +
+			'<a class="btn-floating waves-effect waves-light orange btn tooltipped modal-trigger"  href="#foulsModal_' +
 			id +
-			'" href="#foulsModal_' +
+			'"data-position="bottom" data-tooltip="Pénalités"><i class="material-icons addFouls" id="fouls_' +
 			id +
-			'"data-position="left" data-tooltip="Pénalités"><i class="material-icons">flag</i></a>' +
+			'">flag</i></a>' +
 			'</div>' +
-			'<div class="col  s2">' +
-			'<button class="btn-floating btn waves-effect waves-light blue btn tooltipped editResult" data-position="top" data-tooltip="Sauvegarder"' +
+			'<div class="col s2">' +
+			'<button class="btn-floating waves-effect waves-light blue btn tooltipped " data-position="bottom" data-tooltip="Modifier"' +
 			'value="edit_' +
 			id +
 			'" ><i id="edit_' +
 			id +
-			'" class="material-icons edit">edit</i>' +
+			'" class="material-icons editResult">edit</i></button>' +
 			'</div>' +
 			'</div>'
 	);

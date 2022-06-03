@@ -1,5 +1,6 @@
 <?php
 // Ce fichier gère les appels Ajax
+
 require_once 'models/database.php';
 require_once 'models/athletes_model.php';
 require_once 'models/categories_model.php';
@@ -9,11 +10,12 @@ require_once 'models/results_model.php';
 require_once 'models/fouls_model.php';
 require_once 'models/athFouls_model.php';
 require_once "assets/libs/simplexlsx-master/src/SimpleXLSX.php";
+
 require_once 'controllers/parser.php';
 require_once 'controllers/athletes_controller.php';
 // Quand l'appel est effectué
 if (isset($_POST['autoCall'])) {
-// En fonction du second paramètre de Ajax Call on sort le controller nécéssaire
+    // En fonction du second paramètre de Ajax Call on sort le controller nécéssaire
     if (isset($_POST['file'])) {
         if ($_POST['file'] == 0) {
         }

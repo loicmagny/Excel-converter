@@ -56,13 +56,18 @@ $('#boardArea').on('click', 'button', function(e) {
 
 	$('#deleteAth_' + id + '').click(function() {
 		ajaxCall(['deleteAth', 0, id]);
+		M.toast({ html: 'Athlète supprimé' });
+		$('#athBoard_' + id + '_content').empty();
 	});
 
 	$('#editAth_' + id + '').click(function() {
 		ajaxCall(['getSingleAth', 0, id]);
 		$('#actions_' + id + '').html(
-			'<div class="row">' +
-				'<div class="col s4">' +
+			'<td class="center" id="actions_' +
+				id +
+				'">' +
+				'<div class="row">' +
+				'<div class="col offset-s2">' +
 				'    <button class=" btn tooltipped btn-floating btn-large waves-effect waves-light btn-small green" data-position="top" data-tooltip="Ajouter">' +
 				'<i id="confirmEditAth_' +
 				id +
@@ -74,7 +79,8 @@ $('#boardArea').on('click', 'button', function(e) {
 				id +
 				'" class="material-icons">clear</i>' +
 				'</div>' +
-				'</div>'
+				'</div>' +
+				'</td>'
 		);
 		$('#confirmEditAth_' + id + '').click(function() {
 			ajaxCall([
@@ -142,14 +148,18 @@ $('#cat_id').mouseleave(function() {
 });
 
 $('#type_id').mouseenter(function() {
-	$('#type_id').html('Compétition<i class="material-icons">arrow_drop_down</i>');
+	$('#type_id').html(
+		'Compétition<i class="material-icons">arrow_drop_down</i>'
+	);
 });
 $('#type_id').mouseleave(function() {
 	$('#type_id').html('Compétition');
 });
 
 $('#swimTime').mouseenter(function() {
-	$('#swimTime').html('Engagement<i class="material-icons">arrow_drop_down</i>');
+	$('#swimTime').html(
+		'Engagement<i class="material-icons">arrow_drop_down</i>'
+	);
 });
 $('#swimTime').mouseleave(function() {
 	$('#swimTime').html('Engagement');
@@ -182,6 +192,7 @@ verifyCheckboxesState();
 function displayInputForUpdate(id, array) {
 	console.log(array.swimTime);
 	let time = splitTimeForInputDisplay(array.swimTime);
+	console.log(time);
 	if (time[1] == undefined) {
 		let tmp = time[0];
 		time[1] = Math.floor(tmp % 60);
@@ -231,7 +242,7 @@ function displayInputForUpdate(id, array) {
 				'<option value="0">Femme</option>' +
 				'<option selected value="1">Homme</option>' +
 				'</select>' +
-				'<label>Materialize Select</label>' +
+				'<label>Genre</label>' +
 				'</div>'
 		);
 	} else if (array.gender == 0) {
@@ -244,7 +255,7 @@ function displayInputForUpdate(id, array) {
 				'<option selected value="0">Femme</option>' +
 				'<option value="1">Homme</option>' +
 				'</select>' +
-				'<label>Materialize Select</label>' +
+				'<label>Genre</label>' +
 				'</div>'
 		);
 	}
@@ -267,7 +278,7 @@ function displayInputForUpdate(id, array) {
 					'<option value="9">Master 50+</option>' +
 					'<option value="10">Master 60+</option>' +
 					'</select>' +
-					'<label>Materialize Select</label>' +
+					'<label>Catégorie</label>' +
 					'</div>'
 			);
 			break;
@@ -289,7 +300,7 @@ function displayInputForUpdate(id, array) {
 					'<option value="9">Master 50+</option>' +
 					'<option value="10">Master 60+</option>' +
 					'</select>' +
-					'<label>Materialize Select</label>' +
+					'<label>Catégorie</label>' +
 					'</div>'
 			);
 			break;
@@ -311,7 +322,7 @@ function displayInputForUpdate(id, array) {
 					'<option value="9">Master 50+</option>' +
 					'<option value="10">Master 60+</option>' +
 					'</select>' +
-					'<label>Materialize Select</label>' +
+					'<label>Catégorie</label>' +
 					'</div>'
 			);
 			break;
@@ -333,7 +344,7 @@ function displayInputForUpdate(id, array) {
 					'<option value="9">Master 50+</option>' +
 					'<option value="10">Master 60+</option>' +
 					'</select>' +
-					'<label>Materialize Select</label>' +
+					'<label>Catégorie</label>' +
 					'</div>'
 			);
 			break;
@@ -355,7 +366,7 @@ function displayInputForUpdate(id, array) {
 					'<option value="9">Master 50+</option>' +
 					'<option value="10">Master 60+</option>' +
 					'</select>' +
-					'<label>Materialize Select</label>' +
+					'<label>Catégorie</label>' +
 					'</div>'
 			);
 			break;
@@ -377,7 +388,7 @@ function displayInputForUpdate(id, array) {
 					'<option  value="9">Master 50+</option>' +
 					'<option  value="10">Master 60+</option>' +
 					'</select>' +
-					'<label>Materialize Select</label>' +
+					'<label>Catégorie</label>' +
 					'</div>'
 			);
 			break;
@@ -399,7 +410,7 @@ function displayInputForUpdate(id, array) {
 					'<option value="9">Master 50+</option>' +
 					'<option value="10">Master 60+</option>' +
 					'</select>' +
-					'<label>Materialize Select</label>' +
+					'<label>Catégorie</label>' +
 					'</div>'
 			);
 			break;
@@ -421,7 +432,7 @@ function displayInputForUpdate(id, array) {
 					'<option value="9">Master 50+</option>' +
 					'<option value="10">Master 60+</option>' +
 					'</select>' +
-					'<label>Materialize Select</label>' +
+					'<label>Catégorie</label>' +
 					'</div>'
 			);
 			break;
@@ -443,7 +454,7 @@ function displayInputForUpdate(id, array) {
 					'<option selected value="9">Master 50+</option>' +
 					'<option value="10">Master 60+</option>' +
 					'</select>' +
-					'<label>Materialize Select</label>' +
+					'<label>Catégorie</label>' +
 					'</div>'
 			);
 			break;
@@ -465,7 +476,7 @@ function displayInputForUpdate(id, array) {
 					'<option value="9">Master 50+</option>' +
 					'<option selected value="10">Master 60+</option>' +
 					'</select>' +
-					'<label>Materialize Select</label>' +
+					'<label>Catégorie</label>' +
 					'</div>'
 			);
 			break;
@@ -487,7 +498,7 @@ function displayInputForUpdate(id, array) {
 					'<option value="9">Master 50+</option>' +
 					'<option  value="10">Master 60+</option>' +
 					'</select>' +
-					'<label>Materialize Select</label>' +
+					'<label>Catégorie</label>' +
 					'</div>'
 			);
 			break;
@@ -503,7 +514,7 @@ function displayInputForUpdate(id, array) {
 				'<option selected value="1">Triathle</option>' +
 				'<option value="2">Laser Run</option>' +
 				'</select>' +
-				'<label>Materialize Select</label>' +
+				'<label>Type</label>' +
 				'</div>'
 		);
 	} else if (array.type_id == 2) {
@@ -516,7 +527,7 @@ function displayInputForUpdate(id, array) {
 				'<option value="1">Triathle</option>' +
 				'<option selected value="2">Laser Run</option>' +
 				'</select>' +
-				'<label>Materialize Select</label>' +
+				'<label>Type</label>' +
 				'</div>'
 		);
 	}

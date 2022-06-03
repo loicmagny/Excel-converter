@@ -1,21 +1,52 @@
 <?php
 // require_once '../models/categories_model.php';
+
+$isStarted = false;
+
 if (isset($_POST['action'])) {
+    $isStarted = true;
+    if ($isStarted) {
+        $loader = createAthletes();
+        $isStarted = false;
+    }
+}
+
+function createAthletes()
+{
     require_once 'parser.php';
     $xlsx = getExcelFiles();
     for ($i = 0; $i < count($xlsx); $i++) {
         foreach ($xlsx[$i]->rows() as $elt) {
-            if ($elt[3] == 'Prenom' || $elt[3] == "") {
+            if ($elt[3] == 'Prenom' || $elt[3] == '') {
                 next($elt);
             } else {
                 $athlete = new athlete();
-                $athlete->setClub(htmlspecialchars($elt[1]));
-                $athlete->setLast_name(ucwords(strtolower(htmlentities($elt[2], ENT_QUOTES, 'UTF-8', true))));
-                $athlete->setFirst_name(ucwords(strtolower(htmlentities($elt[3], ENT_QUOTES, 'UTF-8', true))));
-                $athlete->setCat_id(formatCat(strtolower(htmlspecialchars($elt[4]))));
-                $athlete->setSwimTime(formatSwimTime(($elt[5])));
-                $athlete->setGender(formatGender(strtolower(htmlspecialchars($elt[6]))));
-                $athlete->setType_id(formatType(strtolower(htmlspecialchars($elt[7]))));
+                $athlete->setClub(strtoupper(htmlspecialchars($elt[1])));
+                $athlete->setLast_name(
+                    ucwords(
+                        strtolower(ucfirst(
+                            htmlentities($elt[2], ENT_QUOTES, 'UTF-8', true)
+                        ))
+                    )
+                );
+                $athlete->setFirst_name(
+                    ucwords(
+                        strtolower(ucfirst(
+                            htmlentities($elt[3], ENT_QUOTES, 'UTF-8', true)
+                        ))
+                    )
+                );
+                $athlete->setCat_id(
+                    formatCat(strtolower(htmlspecialchars($elt[4])))
+                );
+
+                $athlete->setGender(
+                    formatGender(strtolower(htmlspecialchars($elt[5])))
+                );
+                $athlete->setType_id(
+                    formatType(strtolower(htmlspecialchars($elt[6])))
+                );
+                $athlete->setSwimTime(formatSwimTime($elt[7]));
                 $athlete->setLR_handicap('');
                 if ($athlete->createAthlete()) {
                     $insertSucess = true;
@@ -33,20 +64,40 @@ if (isset($_POST['action'])) {
             }
         }
     }
+    return '<script srrc="assets/js/DOM.js" defer></script>';
 }
+
 // Permet de récupérer la totalité des athlètes
 function getEveryAthletes()
 {
     $ath = new athlete();
-    $sorted = array();
+    $sorted = [];
     $board = $ath->getAllAthletes();
     for ($i = 0; $i < sizeof($board); $i++) {
         $sorted[$i] = $board[$i];
         $sorted[$i]['gender'] = transformGender($board[$i]['gender']);
         $sorted[$i]['type_id'] = transformType($board[$i]['type_id']);
-        $sorted[$i]['first_name'] = ucfirst(html_entity_decode($sorted[$i]['first_name'], ENT_QUOTES | ENT_XML1, 'UTF-8'));
-        $sorted[$i]['last_name'] = ucfirst(html_entity_decode($sorted[$i]['last_name'], ENT_QUOTES | ENT_XML1, 'UTF-8'));
-        $sorted[$i]['club'] = ucfirst(html_entity_decode($sorted[$i]['club'], ENT_QUOTES | ENT_XML1, 'UTF-8'));
+        $sorted[$i]['first_name'] = ucfirst(
+            html_entity_decode(
+                $sorted[$i]['first_name'],
+                ENT_QUOTES | ENT_XML1,
+                'UTF-8'
+            )
+        );
+        $sorted[$i]['last_name'] = ucfirst(
+            html_entity_decode(
+                $sorted[$i]['last_name'],
+                ENT_QUOTES | ENT_XML1,
+                'UTF-8'
+            )
+        );
+        $sorted[$i]['club'] = ucfirst(
+            html_entity_decode(
+                $sorted[$i]['club'],
+                ENT_QUOTES | ENT_XML1,
+                'UTF-8'
+            )
+        );
     }
     return $sorted;
 }
@@ -54,15 +105,33 @@ function getEveryAthletes()
 function getEveryAthletesSortedAsc($field)
 {
     $ath = new athlete();
-    $sorted = array();
+    $sorted = [];
     $board = $ath->getAllAthletesSortedAsc($field);
     for ($i = 0; $i < sizeof($board); $i++) {
         $sorted[$i] = $board[$i];
         $sorted[$i]['gender'] = transformGender($board[$i]['gender']);
         $sorted[$i]['type_id'] = transformType($board[$i]['type_id']);
-        $sorted[$i]['first_name'] = ucfirst(html_entity_decode($sorted[$i]['first_name'], ENT_QUOTES | ENT_XML1, 'UTF-8'));
-        $sorted[$i]['last_name'] = ucfirst(html_entity_decode($sorted[$i]['last_name'], ENT_QUOTES | ENT_XML1, 'UTF-8'));
-        $sorted[$i]['club'] = ucfirst(html_entity_decode($sorted[$i]['club'], ENT_QUOTES | ENT_XML1, 'UTF-8'));
+        $sorted[$i]['first_name'] = ucfirst(
+            html_entity_decode(
+                $sorted[$i]['first_name'],
+                ENT_QUOTES | ENT_XML1,
+                'UTF-8'
+            )
+        );
+        $sorted[$i]['last_name'] = ucfirst(
+            html_entity_decode(
+                $sorted[$i]['last_name'],
+                ENT_QUOTES | ENT_XML1,
+                'UTF-8'
+            )
+        );
+        $sorted[$i]['club'] = ucfirst(
+            html_entity_decode(
+                $sorted[$i]['club'],
+                ENT_QUOTES | ENT_XML1,
+                'UTF-8'
+            )
+        );
     }
     return $sorted;
 }
@@ -70,25 +139,43 @@ function getEveryAthletesSortedAsc($field)
 function getEveryAthletesSortedDesc($field)
 {
     $ath = new athlete();
-    $sorted = array();
+    $sorted = [];
     $board = $ath->getAllAthletesSortedDesc($field);
     for ($i = 0; $i < sizeof($board); $i++) {
         $sorted[$i] = $board[$i];
         $sorted[$i]['gender'] = transformGender($board[$i]['gender']);
         $sorted[$i]['type_id'] = transformType($board[$i]['type_id']);
-        $sorted[$i]['first_name'] = ucfirst(html_entity_decode($sorted[$i]['first_name'], ENT_QUOTES | ENT_XML1, 'UTF-8'));
-        $sorted[$i]['last_name'] = ucfirst(html_entity_decode($sorted[$i]['last_name'], ENT_QUOTES | ENT_XML1, 'UTF-8'));
-        $sorted[$i]['club'] = ucfirst(html_entity_decode($sorted[$i]['club'], ENT_QUOTES | ENT_XML1, 'UTF-8'));
+        $sorted[$i]['first_name'] = ucfirst(
+            html_entity_decode(
+                $sorted[$i]['first_name'],
+                ENT_QUOTES | ENT_XML1,
+                'UTF-8'
+            )
+        );
+        $sorted[$i]['last_name'] = ucfirst(
+            html_entity_decode(
+                $sorted[$i]['last_name'],
+                ENT_QUOTES | ENT_XML1,
+                'UTF-8'
+            )
+        );
+        $sorted[$i]['club'] = ucfirst(
+            html_entity_decode(
+                $sorted[$i]['club'],
+                ENT_QUOTES | ENT_XML1,
+                'UTF-8'
+            )
+        );
     }
     return $sorted;
 }
 
-// Passe la donné 'type' d'un int vers une str 
+// Passe la donné 'type' d'un int vers une str
 function transformType($int)
 {
     if ($int == 1) {
         return 'Triathle';
-    } else if ($int == 2) {
+    } elseif ($int == 2) {
         return 'Laser Run';
     }
 }
@@ -97,7 +184,7 @@ function transformGender($int)
 {
     if ($int == 0) {
         return 'Femme';
-    } else if ($int == 1) {
+    } elseif ($int == 1) {
         return 'Homme';
     }
 }
@@ -105,7 +192,7 @@ function transformGender($int)
 function getAllBoys()
 {
     $boys = new athlete();
-    $heats = array();
+    $heats = [];
     $heats[0] = $boys->getBoysCat(50);
     $heats[1] = $boys->getBoysCat(100);
     $heats[2] = $boys->getBoysCat(200);
@@ -115,7 +202,7 @@ function getAllBoys()
 function getAllGirls()
 {
     $girls = new athlete();
-    $heats = array();
+    $heats = [];
     $heats[0] = $girls->getGirlsCat(50);
     $heats[1] = $girls->getGirlsCat(100);
     $heats[2] = $girls->getGirlsCat(200);
@@ -126,9 +213,9 @@ function editAthData($arg)
 {
     $update = new athlete();
     $update->setId((int) $arg[0]);
-    $update->setLast_name(strtolower(ucwords(htmlspecialchars($arg[1]))));
-    $update->setFirst_name(strtolower(ucwords(htmlspecialchars($arg[2]))));
-    $update->setClub(strtolower(ucwords(htmlspecialchars($arg[3]))));
+    $update->setLast_name(ucfirst(ucwords(htmlspecialchars($arg[1]))));
+    $update->setFirst_name(ucfirst(ucwords(htmlspecialchars($arg[2]))));
+    $update->setClub(ucfirst(ucwords(htmlspecialchars($arg[3]))));
     $update->setGender((int) $arg[4]);
     $update->setCat_id((int) $arg[5]);
     $update->setType_id((int) $arg[6]);
@@ -207,26 +294,43 @@ function getSingleAth($arg)
     $athlete->setId($arg);
     return $athlete->getSingleAthlete();
 }
-// Permet de récupérer un athlète inscrit pour le Laser Run (type = 2)
-function getLRAth($array)
+
+function countLRAth()
 {
     $athlete = new athlete();
-    $athlete->setGender($array[0]);
-    return $athlete->getTheRestofAth();
+    $count = $athlete->countLRAth();
+    return  $count;
+}
+// Permet de récupérer un athlète inscrit pour le Laser Run (type = 2)
+function getLRAth($arg)
+{
+    $athlete = new athlete();
+    $athlete->setGender($arg);
+    return $athlete->getLaserRunNotTriAth();
 }
 // Permet de transformer le gender en un int pour l'envoi en bdd
 function formatGender($str)
 {
-    if ($str == 'h' || $str == 'homme' || $str == '1' || $str == 'garçon' || $str == 'garcon') {
+    if (
+        $str == 'h' ||
+        $str == 'homme' ||
+        $str == '1' ||
+        $str == 'garçon' ||
+        $str == 'garcon'
+    ) {
         return 1;
-    } else if ($str == 'f' || $str == 'femme' || $str == '0' || $str == 'fille') {
+    } elseif (
+        $str == 'f' ||
+        $str == 'femme' ||
+        $str == '0' ||
+        $str == 'fille'
+    ) {
         return 0;
     }
 }
 // Permet de transformer le type en un int pour l'envoi en bdd
 function formatType($str)
 {
-
     if ($str == 'triathle') {
         return 1;
     }
@@ -238,35 +342,38 @@ function formatType($str)
 function formatCat($str)
 {
     switch ($str) {
-        case 'u11':
+        case 'u9':
             return 1;
             break;
-        case 'u13':
+        case 'u11':
             return 2;
             break;
-        case 'u15':
+        case 'u13':
             return 3;
             break;
-        case 'u17':
+        case 'u15':
             return 4;
             break;
-        case 'u19':
+        case 'u17':
             return 5;
             break;
-        case 'u22':
+        case 'u19':
             return 6;
             break;
-        case 'm40':
-            return 8;
+        case 'u22':
+            return 7;
             break;
-        case 'm50':
+        case 'm40+':
             return 9;
             break;
-        case 'm60':
+        case 'm50+':
             return 10;
             break;
+        case 'm60+':
+            return 11;
+            break;
         default:
-            return 7;
+            return 8;
             break;
     }
 }
@@ -274,8 +381,8 @@ function formatCat($str)
 function sortAthByCat()
 {
     $ath = new athlete();
-    $sorted = array();
-    $board = array();
+    $sorted = [];
+    $board = [];
     for ($i = 1; $i <= 10; $i++) {
         $ath->setCat_id($i);
         $board[$i] = $ath->selectAthInCat();
@@ -283,8 +390,12 @@ function sortAthByCat()
     for ($i = 1; $i < count($board); $i++) {
         for ($j = 0; $j < count($board[$i]); $j++) {
             $sorted[$i][$j] = $board[$i][$j];
-            $sorted[$i][$j]['gender'] = transformGender($board[$i][$j]['gender']);
-            $sorted[$i][$j]['type_id'] = transformType($board[$i][$j]['type_id']);
+            $sorted[$i][$j]['gender'] = transformGender(
+                $board[$i][$j]['gender']
+            );
+            $sorted[$i][$j]['type_id'] = transformType(
+                $board[$i][$j]['type_id']
+            );
         }
     }
     return array_filter($sorted);
@@ -293,8 +404,8 @@ function sortAthByCat()
 function sortAthBySex()
 {
     $ath = new athlete();
-    $sorted = array();
-    $board = array();
+    $sorted = [];
+    $board = [];
     for ($i = 0; $i < 2; $i++) {
         $ath->setGender($i);
         $board[$i] = $ath->selectAthBySex();
@@ -302,8 +413,12 @@ function sortAthBySex()
     for ($i = 0; $i < count($board); $i++) {
         for ($j = 0; $j < count($board[$i]); $j++) {
             $sorted[$i][$j] = $board[$i][$j];
-            $sorted[$i][$j]['gender'] = transformGender($board[$i][$j]['gender']);
-            $sorted[$i][$j]['type_id'] = transformType($board[$i][$j]['type_id']);
+            $sorted[$i][$j]['gender'] = transformGender(
+                $board[$i][$j]['gender']
+            );
+            $sorted[$i][$j]['type_id'] = transformType(
+                $board[$i][$j]['type_id']
+            );
         }
     }
     return array_filter($sorted);
@@ -312,8 +427,8 @@ function sortAthBySex()
 function sortAthByType()
 {
     $ath = new athlete();
-    $sorted = array();
-    $board = array();
+    $sorted = [];
+    $board = [];
     for ($i = 1; $i < 3; $i++) {
         $ath->setType_id($i);
         $board[$i] = $ath->selectAthByType();
@@ -321,8 +436,12 @@ function sortAthByType()
     for ($i = 1; $i <= count($board); $i++) {
         for ($j = 0; $j < count($board[$i]); $j++) {
             $sorted[$i][$j] = $board[$i][$j];
-            $sorted[$i][$j]['gender'] = transformGender($board[$i][$j]['gender']);
-            $sorted[$i][$j]['type_id'] = transformType($board[$i][$j]['type_id']);
+            $sorted[$i][$j]['gender'] = transformGender(
+                $board[$i][$j]['gender']
+            );
+            $sorted[$i][$j]['type_id'] = transformType(
+                $board[$i][$j]['type_id']
+            );
         }
     }
     return array_filter($sorted);
@@ -335,14 +454,13 @@ function searchAth($str)
     $ath->setLast_name(ucfirst(ucfirst(htmlspecialchars($str))));
     $ath->setClub(ucfirst(htmlspecialchars($str)));
     $result = $ath->searchForAth();
-    $sorted = array();
+    $sorted = [];
     for ($i = 0; $i < count($result); $i++) {
         $sorted[$i] = $result[$i];
         $sorted[$i]['gender'] = transformGender($result[$i]['gender']);
         $sorted[$i]['type_id'] = transformType($result[$i]['type_id']);
     }
     // echo '<pre>';
-    // var_dump($sorted);
     // echo '</pre>';
     return $sorted;
 }
@@ -369,8 +487,8 @@ function formatSwimTime($str)
         $time = (int) $string[0] * 60;
         if (is_numeric($string[1])) {
             $time += (int) '' . $string[1] . $string[2] . '';
-        } else if ($string[1] == '.') {
-            $time = (int)$string[0] * 60 + (int)$string[2] * 10;
+        } elseif ($string[1] == '.') {
+            $time = (int) $string[0] * 60 + (int) $string[2] * 10;
         } else {
             $time += (int) '' . $string[2] . $string[3] . '';
         }
@@ -380,4 +498,16 @@ function formatSwimTime($str)
         }
     }
     return $time;
+}
+
+function getLRSavedResultsByCategories($arg)
+{
+    $athlete = new athlete();
+    $athlete->setGender($arg[0]);
+    $categories = [];
+    for ($i = 1; $i < 11; $i++) {
+        $athlete->setCat_id($i);
+        $categories[$i] = $athlete->getLRSavedResultsByCategoriesMethod();
+    }
+    return $categories;
 }

@@ -1,4 +1,4 @@
-    <footer class="page-footer indigo">
+    <!--<footer class="page-footer indigo">
         <div class="container">
             <div class="row">
                 <div class="col l6 s12">
@@ -22,10 +22,13 @@
                 <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
             </div>
         </div>
-    </footer>
+    </footer>-->
     </main>
     <script type="text/javascript" src="assets/libs/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="assets/js/loader.js" defer></script>
     </body>
 
     </html>
+
+
+    

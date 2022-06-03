@@ -1,12 +1,12 @@
 <?php
 
-class Fouls extends database
+class Foul extends database
 {
 
     private $id = 0;
     private $label = "";
     private $type = 0;
-    private $points = '';
+    private $seconds = '';
     private $tablename = 'fouls';
 
     public function __construct()
@@ -17,40 +17,33 @@ class Fouls extends database
     {
         return $this->id;
     }
-
     public function setId($id)
     {
         $this->id = $id;
     }
-
     public function getLabel()
     {
         return $this->label;
     }
-
     public function setLabel($label)
     {
         $this->label = $label;
     }
-
     public function getType()
     {
         return $this->type;
     }
-
     public function setType($type)
     {
         $this->type = $type;
     }
-
-    public function getPoints()
+    public function getSeconds()
     {
-        return $this->points;
+        return $this->seconds;
     }
-
-    public function setPoints($points)
+    public function setSeconds($seconds)
     {
-        $this->points = $points;
+        $this->seconds = $seconds;
     }
     // Méthode pour récupérer les pénalités stockées en bdd
     public function getFouls()
@@ -59,7 +52,7 @@ class Fouls extends database
         `id`,
         `label`,
         `type`,
-        `points`
+        `seconds`
     FROM
     ' . $this->tablename . '
     WHERE
@@ -67,17 +60,28 @@ class Fouls extends database
         $foul = $this->db->prepare($query);
         $foul->bindValue(':type', $this->type, PDO::PARAM_INT);
         if ($foul->execute()) {
-            $foulResult = $foul->fetch(PDO::FETCH_ASSOC);
+            $foulResult = $foul->fetchAll(PDO::FETCH_ASSOC);
         }
         return $foulResult;
     }
     // Méthode permettant de récupérer une seule pénalité via son id
     public function getFoulsById()
     {
-        $query = 'SELECT `id`, `label`, `type`, `points` FROM ' . $this->tablename . ' WHERE id = :id AND `type` = :type';
+        $query = 'SELECT `id`, `label`, `type`, `seconds` FROM ' . $this->tablename . ' WHERE id = :id AND `type` = :type';
         $foulById = $this->db->prepare($query);
         $foulById->bindValue(':id', $this->id, PDO::PARAM_INT);
         $foulById->bindValue(':type', $this->type, PDO::PARAM_INT);
+        if ($foulById->execute()) {
+            $foulByIdResult = $foulById->fetch(PDO::FETCH_ASSOC);
+        }
+        return $foulByIdResult;
+    }
+
+    public function getSingleFoul()
+    {
+        $query = 'SELECT `id`, `label`, `type`, `seconds` FROM ' . $this->tablename . ' WHERE id = :id';
+        $foulById = $this->db->prepare($query);
+        $foulById->bindValue(':id', $this->id, PDO::PARAM_INT);
         if ($foulById->execute()) {
             $foulByIdResult = $foulById->fetch(PDO::FETCH_ASSOC);
         }

@@ -21,18 +21,17 @@ function ajaxCall(array) {
     arg: data[2]
   }, function (result) {
     // Parse les données en JSON vers quelque chose d'exploitable en Js
-    var datas = JSON.parse(result);
-    console.log(datas); // Condition pour déterminer la page sur laquelle on se trouve
+    var datas = JSON.parse(result); // Condition pour déterminer la page sur laquelle on se trouve
     // Chaque page, en fonction des noms de fonctions passés en paramètre de l'appel, appelle les fonctions nécéssaires
 
     if ($(location).attr('href') == BOARD || $(location).attr('href') == INDEX) {
       if (data[0] == 'getEveryAthletes') {
-        generateHTML(datas, 0, 1);
+        generateIndexBoard(datas, 0);
       }
 
       if (data[0] == 'getEveryAthletesSortedAsc') {
         $('#athBoard').empty();
-        generateHTML(datas, 0, 1);
+        generateIndexBoard(datas, 0);
       }
 
       if (data[0] == 'getSingleAth') {
@@ -82,17 +81,18 @@ function ajaxCall(array) {
         fillFoulModal(datas, data[3]);
       } else if (data[0] == 'getAthSwimFoul') {
         for (var _i = 0; _i < datas.length; _i++) {
-          $('#athFoulsList_' + datas[_i].ath_id + '').empty();
           $('#athLabel_' + datas[_i].ath_id + '').append(' ');
           $('#athPoints_' + datas[_i].ath_id + '').append(' ');
-          $('#athFoulsList_' + datas[_i].ath_id + '').append('<div class="collection-item blue-grey darken-1 white-text hoverable valign-wrapper">' + datas[_i].label + '<span class="badge white-text">' + datas[_i].points + '</span>' + '<a class=" btn btn-floating waves-effect waves-light waves-red red"><i class="material-icons deleteFouls" id="deleteAthFoul_' + datas[_i].id + '">delete</i></a>' + '</div>');
+          $('#athFoulsList_' + datas[_i].ath_id + '').append('<div class="collection-item blue-grey darken-1 white-text hoverable valign-wrapper" id="item_' + datas[_i].id + '">' + datas[_i].label + '<span class="badge white-text">' + datas[_i].points + '</span>' + '<a class=" btn btn-floating waves-effect waves-light waves-red red"><i class="material-icons deleteFouls" id="deleteAthFoul_' + datas[_i].id + '">delete</i></a>' + '</div>');
         }
       } else if (data[0] == 'addFoulToAth') {
         $('#athLabel_' + datas.ath_id + '').append(+' ');
         $('#athPoints_' + datas.ath_id + '').append(+' ');
         $('#athFoulsList_' + datas.ath_id + '').append('<div class="collection-item blue-grey darken-1 white-text hoverable valign-wrapper" id="foulItem_' + datas.ath_id + '">' + datas.label + '<span class="badge white-text">' + datas.points + '</span>' + '<a class=" btn-small btn-floating waves-effect waves-light red"><i class="material-icons deleteFouls" id="deleteAthFoul_' + datas.id + '">delete</i></a>' + '</div>');
+        $('#points_' + datas.ath_id + '').html('' + datas.swiPts + '');
       } else if (data[0] == 'removeAthFouls') {
-        $('#athFoulsList_' + data[2] + '').empty();
+        $(parent > '#item_' + data[2] + '').remove();
+        $('#points_' + datas[0].ath_id + '').html('' + datas[0].swiPts + '');
       }
     }
 
@@ -104,23 +104,26 @@ function ajaxCall(array) {
           getStoredBoysTimes(datas);
         }
       } else if (data[0] == 'getAthCatDetails') {
-        laserRunTimeHandler(['boy', 'minutes', 'seconds', 'lr_points', 'lr_ptsPerSec'], datas, data[2]);
+        laserRunTimeHandler(['boy', 'minutes', 'seconds', 'lr_points_', 'lr_ptsPerSec'], datas, data[2]);
         laserRunTimeHandler(['girl', 'minutes', 'seconds', 'lr_points', 'lr_ptsPerSec'], datas, data[2]);
       } else if (data[0] == 'getLRSavedTimes') {
         formatTimeEntry(['minutes_', 'seconds_', 'lr_points_', 'arrival_'], datas);
-      } else if (data[0] == 'getAthHandicap') {} else if (data[0] == 'getFouls') {
+      } else if (data[0] == 'getFouls') {
         fillFoulModal(datas, data[3]);
       } else if (data[0] == 'getAthLRFoulList') {
         for (var _i2 = 0; _i2 < datas.length; _i2++) {
-          $('#athFoulsList_' + datas[_i2].ath_id + '').empty();
           $('#athLabel_' + datas[_i2].ath_id + '').append(' ');
           $('#athPoints_' + datas[_i2].ath_id + '').append(' ');
-          $('#athFoulsList_' + datas[_i2].ath_id + '').append('<div class="collection-item blue-grey darken-1 white-text hoverable valign-wrapper">' + datas[_i2].label + '<span class="badge white-text">' + datas[_i2].points + '</span>' + '<a class=" btn btn-floating waves-effect waves-light waves-red red"><i class="material-icons deleteFouls" id="deleteAthFoul_' + datas[_i2].id + '">delete</i></a>' + '</div>');
+          $('#athFoulsList_' + datas[_i2].ath_id + '').append('<div class="collection-item blue-grey darken-1 white-text hoverable valign-wrapper">' + datas[_i2].label + '<span class="badge white-text"> -' + datas[_i2].seconds + '</span>' + '<a class=" btn btn-floating waves-effect waves-light waves-red red"><i class="material-icons deleteFouls" id="deleteAthFoul_' + datas[_i2].id + '">delete</i></a>' + '</div>');
         }
       } else if (data[0] == 'addFoulToAth') {
+        console.log(datas, data);
         $('#athLabel_' + datas.ath_id + '').append(+' ');
         $('#athPoints_' + datas.ath_id + '').append(+' ');
-        $('#athFoulsList_' + datas.ath_id + '').append('<div class="collection-item blue-grey darken-1 white-text hoverable valign-wrapper" id="foulItem_' + datas.ath_id + '">' + datas.label + '<span class="badge white-text">' + datas.points + '</span>' + '<a class=" btn-small btn-floating waves-effect waves-light red"><i class="material-icons deleteFouls" id="deleteAthFoul_' + datas.id + '">delete</i></a>' + '</div>');
+        $('#athFoulsList_' + datas.ath_id + '').append('<div class="collection-item blue-grey darken-1 white-text hoverable valign-wrapper" id="foulItem_' + datas.ath_id + '">' + datas.label + '<span class="badge white-text">' + datas.seconds + '</span>' + '<a class=" btn-small btn-floating waves-effect waves-light red"><i class="material-icons deleteFouls" id="deleteAthFoul_' + datas.id + '">delete</i></a>' + '</div>');
+        $('#lr_points_' + datas.ath_id + '').html('' + datas.lrPts + '');
+      } else if (data[0] == 'getLRAth') {
+        displayLaserRunAth(datas, formatGender(data[2]));
       }
     }
 
@@ -130,20 +133,25 @@ function ajaxCall(array) {
         datas = 0;
       } else if (data[0] == 'getAllGirlsDatas') {// calculateResults(datas);
       } else if (data[0] == 'valueChecker') {
-        if (datas[0]['COUNT(1)'] == '0') {
+        console.log(datas);
+
+        if (datas[0]['COUNT(1)'] == 0) {
           for (var _i3 = 0; _i3 < data[2][1].length; _i3++) {
             for (var j = 0; j < data[2][1][_i3].length; j++) {
-              ajaxCall(['insertAthResult', 4, [total = parseInt(data[2][1][_i3][j]['lr_points']) + parseInt(data[2][1][_i3][j]['points']), data[2][1][_i3][j]['ath_id'], data[2][1][_i3][j]['time'], data[2][1][_i3][j]['lr_time'], data[2][1][_i3][j]['points'], data[2][1][_i3][j]['lr_points'], data[2][1][_i3][j]['lr_handicap']]]);
+              console.log('daTa: ', data[2][1][_i3], data[2][1][_i3][j]['ath_id'], data[2][1][_i3][j]['points']);
+              ajaxCall(['insertAthResult', 4, [j + 1, parseInt(data[2][1][_i3][j]['points']), data[2][1][_i3][j]['ath_id']]]);
             }
           }
-        } else if (datas[0]['COUNT(1)'] == '1') {}
+        } else if (datas[0]['COUNT(1)'] == 1) {
+          alert("c'est fait");
+        }
       } else if (data[0] == 'getAllAthResult') {
         var cleaned = Object.values(datas).filter(function (e) {
           return e.length;
         });
 
         if (cleaned.length > 0) {
-          generateHTML(cleaned, '' + formatGender(cleaned[0][0]['gender']) + '', 4);
+          generateResultsBoard(cleaned, '' + formatGender(cleaned[0][0]['gender']) + '');
 
           for (var _i4 = 0; _i4 < Object.keys(cleaned).length; _i4++) {
             for (var _j = 0; _j < Object.keys(cleaned[_i4]).length; _j++) {
@@ -151,7 +159,14 @@ function ajaxCall(array) {
             }
           }
         }
+      } else if (data[0] == 'getLRSavedResultsByCategories') {
+        formatResultDatas(datas); // generateResultsBoard(datas, 'boy');
+      } else if (data[0] == 'fileCreationStart') {
+        file = WriteToFile(datas, 'result');
+        console.log(file);
       }
+
+      {}
     }
 
     if ($(location).attr('href') == OPTIONS) {
@@ -207,11 +222,17 @@ function ajaxCall(array) {
 } // Fonction pour créer un tableau multidimensionnel (utilité à confirmer)
 
 
-function dynamicMatrix(size) {
+function dynamicMatrix(size, width) {
   var matrix = [];
 
-  for (var i = 0; i < size; i++) {
-    matrix[i] = new Array(size);
+  if (width) {
+    for (var i = 0; i < size; i++) {
+      matrix[i] = new Array(width);
+    }
+  } else {
+    for (var _i5 = 0; _i5 < size; _i5++) {
+      matrix[_i5] = new Array(size);
+    }
   }
 
   return matrix;
@@ -257,8 +278,19 @@ function minIntoSec(str) {
 
 
 function splitTimeForInputDisplay(str) {
-  var string = str.replace(/[^0-9.]/g, '');
-  return [string[0] + string[1], string[2] + string[3]];
+  console.log(str);
+
+  if (str == 0) {
+    return '00:00';
+  } else {
+    var string = str.replace(/[^0-9.]/g, '');
+
+    if (string.length < 5) {
+      return [string[0] + string[1], string[2] + string[3]];
+    } else if (string.length < 6) {
+      return [string[1] + string[2], string[3] + string[4]];
+    }
+  }
 } // Remplit les input de temps et ajoute/enlève des class css
 
 
@@ -327,21 +359,70 @@ function formatTimeEntry(arrayStr, datas) {
   var success = 0;
 
   for (var i = 0; i < datas.length; i++) {
+    console.log(datas[i]['time']);
     var time = splitTimeForInputDisplay(secIntoMin(datas[i]['time']));
-    $('#' + arrayStr[0] + '' + datas[i]['ath_id'] + '').val(time[0]).siblings('label').addClass('active');
-    $('#' + arrayStr[1] + '' + datas[i]['ath_id'] + '').val(time[1]).siblings('label').addClass('active');
-    $('#' + arrayStr[2] + '' + datas[i]['ath_id'] + '').html(datas[i]['points']);
 
-    if (datas[i]['arrival']) {
-      $('#' + arrayStr[3] + '' + datas[i]['ath_id'] + '').val(datas[i]['arrival']).siblings('label').addClass('active');
+    if (time == 0) {
+      return;
+    } else {
+      $('#' + arrayStr[0] + '' + datas[i]['ath_id'] + '').val(time[0]).siblings('label').addClass('active');
+      $('#' + arrayStr[1] + '' + datas[i]['ath_id'] + '').val(time[1]).siblings('label').addClass('active');
+      $('#' + arrayStr[2] + '' + datas[i]['ath_id'] + '').html(datas[i]['points']);
+
+      if (datas[i]['arrival']) {
+        $('#' + arrayStr[3] + '' + datas[i]['ath_id'] + '').val(datas[i]['arrival']).siblings('label').addClass('active');
+      }
+
+      transformAddButton(datas[i]['ath_id']);
+      success++;
+
+      if (success == $('#boysTable_' + i + '_content').children().length - 1 || success == $('#girlsTable_' + i + '_content').children().length - 1) {
+        success = 0;
+      }
     }
+  }
+}
 
-    transformAddButton(datas[i]['ath_id']);
-    success++;
+function genderStrtoInt(str) {
+  switch (str) {
+    case 'Femme':
+      return 0;
 
-    if (success == $('#boysTable_' + i + '_content').children().length - 1 || success == $('#girlsTable_' + i + '_content').children().length - 1) {
-      success = 0;
-    }
+    case 'Femmes':
+      return 0;
+
+    case 'F':
+      return 0;
+
+    case 'f':
+      return 0;
+
+    case 'femme':
+      return 0;
+
+    case 'femmes':
+      return 0;
+
+    case 'Homme':
+      return 1;
+
+    case 'Hommes':
+      return 1;
+
+    case 'H':
+      return 1;
+
+    case 'h':
+      return 1;
+
+    case 'homme':
+      return 1;
+
+    case 'hommes':
+      return 1;
+
+    default:
+      console.log('str: ', str);
   }
 } // Permet de formater le genre des athlètes d'un int vers une str
 
@@ -352,32 +433,38 @@ function formatGender(str) {
   } else if (str == 0) {
     return 'girl';
   }
+}
+
+function formatType(type) {
+  if (type == 1) {
+    return 'Triathle';
+  } else if (type == 2) {
+    return 'Laser Run';
+  }
 } //Permet de remplir la modale pour les fautes:
 // notamment le select + la liste des pénalités pour l'althlete
 
 
 function fillFoulModal(datas, id) {
   for (x in datas) {
-    $('#foulSelect_' + id + '').empty();
-    $('#foulSelect_' + id + '').append('<option value="' + datas.points + ' " id="select_' + datas.id + '">' + datas.label + ' </option>');
-    $('select').formSelect();
+    $('#foulSelect_' + id + '').append('<option value="' + datas[x].seconds + ' " id="select_' + datas[x].id + '">' + datas[x].label + ' </option>');
   }
 
-  $('#foulSelect_' + id + '').change(function () {
+  $('select').formSelect();
+  $('span').click(function () {
     $('#foulLabel_' + id + '').html($('#foulSelect_' + id + ' option:selected').text());
     $('#foulPoints_' + id + '').html($('#foulSelect_' + id + ' option:selected').val());
   });
   $('.collection').on('click', 'a', function (event) {
     event.stopPropagation();
     event.stopImmediatePropagation();
-    var id = $(this).children().attr('id');
-    ajaxCall(['removeAthFouls', 5, parseInt(id.replace(/[^0-9.]/g, ''))]);
+    var idDelete = $(this).children().attr('id');
+    ajaxCall(['removeAthFouls', 5, [parseInt(id), parseInt(idDelete.replace(/[^0-9.]/g, ''))]]);
     $(this).parent().empty();
   });
-  $('.modal-footer').on('click', 'button', function (e) {
+  $('#foulsValidate_' + id + '').click(function (e) {
     e.stopPropagation();
-    e.stopImmediatePropagation();
-    var id = e.target.id.replace(/[^0-9.]/g, '');
+    e.stopImmediatePropagation(); // let id = e.target.id.replace(/[^0-9.]/g, '');
 
     if ($(this).hasClass('validate')) {
       var foul = $('#foulSelect_' + id + ' option:selected').attr('id').replace(/[^0-9.]/g, '');
@@ -395,13 +482,13 @@ function fillFoulModal(datas, id) {
   });
 }
 
-$('.center').on('click', 'a', function () {
+$('.center').on('click', 'a', function (e) {
   if ($(location).attr('href') == SWIMMING) {
-    var id = this.id.replace(/[^0-9.]/g, '');
+    var id = e.target.id.replace(/[^0-9.]/g, '');
     ajaxCall(['getFouls', 5, 1, id]);
     ajaxCall(['getAthSwimFoul', 5, id]);
   } else if ($(location).attr('href') == LASERRUN) {
-    var _id = this.id.replace(/[^0-9.]/g, '');
+    var _id = e.target.id.replace(/[^0-9.]/g, '');
 
     ajaxCall(['getFouls', 5, 2, _id]);
     ajaxCall(['getAthLRFoulList', 5, _id]);

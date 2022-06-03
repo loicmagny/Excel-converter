@@ -1,0 +1,6 @@
+{
+    "require": {
+        "twig/twig": "3.1",
+        "mpdf/mpdf": "^8.1"
+    }
+}

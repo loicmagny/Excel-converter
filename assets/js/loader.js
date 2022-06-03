@@ -5,9 +5,8 @@ $(document).ready(function() {
 		$.getScript('assets/js/const.js', function() {
 			$.getScript('assets/js/DOM.js', function() {
 				$.getScript('assets/js/main.js', function() {
-					let url = $(location).attr('href');
-					console.log(url);
-					switch (url) {
+					console.log($(location).attr('href'));
+					switch ($(location).attr('href')) {
 						case SWIMMING:
 							$.getScript('assets/js/swimming.js', function() {
 								console.log('swimming');
@@ -34,7 +33,7 @@ $(document).ready(function() {
 							});
 							break;
 						default:
-							$.getScript('assets/js/DOM.js', function() {});
+							// $.getScript('assets/js/DOM.js', function() {});
 							break;
 					}
 				});

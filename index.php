@@ -13,7 +13,7 @@ include 'header.php';
         </div>
         <div class="row center">
             <form method="POST" enctype="multipart/form-data" id="converter">
-                <button class="waves-effect waves-light btn" name="action"><i class="material-icons left">cloud</i>Commencer</a>
+                <button class="waves-effect waves-light btn" name="action"><i class="material-icons left">start</i>Commencer</button>
             </form>
         </div>
     </div>

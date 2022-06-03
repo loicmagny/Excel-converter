@@ -3,7 +3,7 @@
 function insertAthleteResult($array)
 {
     $result = new swimming();
-    $athFouls = new athFouls();
+    $athFouls = new athFoul();
     $athFouls->setAth_id((int) htmlspecialchars($array[1]));
     $result->setTime(htmlspecialchars($array[0]));
     $result->setAth_id((int) htmlspecialchars($array[1]));

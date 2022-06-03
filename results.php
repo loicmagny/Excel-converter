@@ -1,4 +1,5 @@
-<?php include 'header.php'; ?>
+<?php include 'header.php';
+require_once 'controllers/results_controller.php'; ?>
 
 <main class="container wrapper center-align center">
     <h1 class="center">Résultats</h1>
@@ -18,7 +19,9 @@
             </ul>
 
         </div>
-        <a class="btn-floating tooltipped btn waves-effect waves-light blue" data-position="bottom" data-tooltip="Imprimer"><i class="material-icons">print</i></a>
+        <form method="POST" enctype="multipart/form-data" id="printer">
+            <button class="btn-floating tooltipped btn waves-effect waves-light blue" data-position="bottom" data-tooltip="Imprimer" name="print" id="print"><i class="material-icons">print</i></button>
+        </form>
     </div>
 </main>
 <?php include 'footer.php'; ?>

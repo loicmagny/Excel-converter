@@ -196,10 +196,13 @@ class athlete extends database
 
         return $this;
     }
-// Méthode pour récupérer unathlète à partir de son id
+    // Méthode pour récupérer unathlète à partir de son id
     public function getSingleAthlete()
     {
-        $query = 'SELECT `id`, `first_name`, `last_name`, `club`, `gender`, `cat_id`, `type_id`, `swimTime`, `LR_handicap` FROM ' . $this->tablename . ' WHERE id = :id';
+        $query =
+            'SELECT `id`, `first_name`, `last_name`, `club`, `gender`, `cat_id`, `type_id`, `swimTime`, `LR_handicap` FROM ' .
+            $this->tablename .
+            ' WHERE id = :id';
         $singleAth = $this->db->prepare($query);
         $singleAth->bindValue(':id', $this->id, PDO::PARAM_INT);
         if ($singleAth->execute()) {
@@ -207,10 +210,13 @@ class athlete extends database
         }
         return $singleAthResult;
     }
-// Méthode pour enregistrer un athlète en bdd
+    // Méthode pour enregistrer un athlète en bdd
     public function createAthlete()
     {
-        $query = 'INSERT INTO ' . $this->tablename . '(
+        $query =
+            'INSERT INTO ' .
+            $this->tablename .
+            '(
             `first_name`,
             `last_name`,
             `club`,
@@ -230,20 +236,33 @@ class athlete extends database
         :swimTime,
         :LR_handicap)';
         $createAthlete = $this->db->prepare($query);
-        $createAthlete->bindValue(':first_name', $this->first_name, PDO::PARAM_STR);
-        $createAthlete->bindValue(':last_name', $this->last_name, PDO::PARAM_STR);
+        $createAthlete->bindValue(
+            ':first_name',
+            $this->first_name,
+            PDO::PARAM_STR
+        );
+        $createAthlete->bindValue(
+            ':last_name',
+            $this->last_name,
+            PDO::PARAM_STR
+        );
         $createAthlete->bindValue(':club', $this->club, PDO::PARAM_STR);
         $createAthlete->bindValue(':gender', $this->gender, PDO::PARAM_INT);
         $createAthlete->bindValue(':type_id', $this->type_id, PDO::PARAM_INT);
         $createAthlete->bindValue(':cat_id', $this->cat_id, PDO::PARAM_INT);
         $createAthlete->bindValue(':swimTime', $this->swimTime, PDO::PARAM_INT);
-        $createAthlete->bindValue(':LR_handicap', $this->LR_handicap, PDO::PARAM_STR);
+        $createAthlete->bindValue(
+            ':LR_handicap',
+            $this->LR_handicap,
+            PDO::PARAM_STR
+        );
         return $createAthlete->execute();
     }
-// Méthode pour récupérer la totalité des athlètes
+    // Méthode pour récupérer la totalité des athlètes
     public function getAllAthletes()
     {
-        $query = 'SELECT
+        $query =
+            'SELECT
         ath.`id`,
         ath.`first_name`,
         ath.`last_name`,
@@ -256,7 +275,9 @@ class athlete extends database
         `categories`.`cat_id`,
         `categories`.`cat_name`,
         `categories`.`distance`
-        FROM ' . $this->tablename . ' AS ath
+        FROM ' .
+            $this->tablename .
+            ' AS ath
         INNER JOIN `categories` ON ath.`cat_id` = `categories`.`cat_id` ORDER BY ath.`type_id` ASC, ath.`last_name` ASC';
         $getAllAthletes = $this->db->query($query);
         if (is_object($getAllAthletes)) {
@@ -267,7 +288,8 @@ class athlete extends database
     // Méthode pour récupérer l'ensemble des athlètes en fonction d'un champ trié de manière ascendante
     public function getAllAthletesSortedAsc($field)
     {
-        $query = 'SELECT
+        $query =
+            'SELECT
         ath.`id`,
         ath.`first_name`,
         ath.`last_name`,
@@ -280,18 +302,23 @@ class athlete extends database
         `categories`.`cat_id`,
         `categories`.`cat_name`,
         `categories`.`distance`
-        FROM ' . $this->tablename . ' AS ath
-        INNER JOIN `categories` ON ath.`cat_id` = `categories`.`cat_id` ORDER BY ath.`' . $field . '` ASC';
+        FROM ' .
+            $this->tablename .
+            ' AS ath
+        INNER JOIN `categories` ON ath.`cat_id` = `categories`.`cat_id` ORDER BY ath.`' .
+            $field .
+            '` ASC';
         $getAllAthletes = $this->db->query($query);
         if (is_object($getAllAthletes)) {
             $athleteList = $getAllAthletes->fetchAll(PDO::FETCH_ASSOC);
         }
         return $athleteList;
     }
-// IDem mais de manière descendante
+    // IDem mais de manière descendante
     public function getAllAthletesSortedDesc($field)
     {
-        $query = 'SELECT
+        $query =
+            'SELECT
         ath.`id`,
         ath.`first_name`,
         ath.`last_name`,
@@ -304,18 +331,23 @@ class athlete extends database
         `categories`.`cat_id`,
         `categories`.`cat_name`,
         `categories`.`distance`
-        FROM ' . $this->tablename . ' AS ath
-        INNER JOIN `categories` ON ath.`cat_id` = `categories`.`cat_id` ORDER BY ath.`' . $field . '` DESC';
+        FROM ' .
+            $this->tablename .
+            ' AS ath
+        INNER JOIN `categories` ON ath.`cat_id` = `categories`.`cat_id` ORDER BY ath.`' .
+            $field .
+            '` DESC';
         $getAllAthletes = $this->db->query($query);
         if (is_object($getAllAthletes)) {
             $athleteList = $getAllAthletes->fetchAll(PDO::FETCH_ASSOC);
         }
         return $athleteList;
     }
-// Méthode pour séléctionner un athlète dans une catégorie
+    // Méthode pour séléctionner un athlète dans une catégorie
     public function selectAthInCat()
     {
-        $query = 'SELECT
+        $query =
+            'SELECT
         ath.`id`,
         ath.`first_name`,
         ath.`last_name`,
@@ -328,7 +360,9 @@ class athlete extends database
         `categories`.`cat_id`,
         `categories`.`cat_name`,
         `categories`.`distance`
-        FROM ' . $this->tablename . ' AS ath
+        FROM ' .
+            $this->tablename .
+            ' AS ath
         INNER JOIN `categories` ON ath.`cat_id` = `categories`.`cat_id`
         WHERE ath.`cat_id` = :cat_id';
         $athInCat = $this->db->prepare($query);
@@ -341,7 +375,8 @@ class athlete extends database
     // Méthode pour séléctionner un athlète selon son sexe
     public function selectAthBySex()
     {
-        $query = 'SELECT
+        $query =
+            'SELECT
         ath.`id`,
         ath.`first_name`,
         ath.`last_name`,
@@ -354,7 +389,9 @@ class athlete extends database
         `categories`.`cat_id`,
         `categories`.`cat_name`,
         `categories`.`distance`
-        FROM ' . $this->tablename . ' AS ath
+        FROM ' .
+            $this->tablename .
+            ' AS ath
         INNER JOIN `categories` ON ath.`cat_id` = `categories`.`cat_id`
         WHERE ath.`gender` = :gender';
         $athBySex = $this->db->prepare($query);
@@ -367,7 +404,8 @@ class athlete extends database
     // Méthode pour séléctionner un athlète selon le type de compétition auquel il participe
     public function selectAthByType()
     {
-        $query = 'SELECT
+        $query =
+            'SELECT
         ath.`id`,
         ath.`first_name`,
         ath.`last_name`,
@@ -380,7 +418,9 @@ class athlete extends database
         `categories`.`cat_id`,
         `categories`.`cat_name`,
         `categories`.`distance`
-        FROM ' . $this->tablename . ' AS ath
+        FROM ' .
+            $this->tablename .
+            ' AS ath
         INNER JOIN `categories` ON ath.`cat_id` = `categories`.`cat_id`
         WHERE ath.`type_id` = :type_id';
         $athByType = $this->db->prepare($query);
@@ -393,7 +433,8 @@ class athlete extends database
     // Méthode permettant de chercher dans la bdd
     public function searchForAth()
     {
-        $query = 'SELECT
+        $query =
+            'SELECT
         ath.`id`,
         ath.`first_name`,
         ath.`last_name`,
@@ -406,7 +447,9 @@ class athlete extends database
         `categories`.`cat_id`,
         `categories`.`cat_name`,
         `categories`.`distance`
-        FROM ' . $this->tablename . ' AS ath
+        FROM ' .
+            $this->tablename .
+            ' AS ath
         INNER JOIN `categories` ON ath.`cat_id` = `categories`.`cat_id`
         WHERE ath.`last_name` = :last_name OR ath.`first_name` = :first_name OR ath.`club` = :club';
         $searchAth = $this->db->prepare($query);
@@ -421,7 +464,8 @@ class athlete extends database
     // Méthode pour récupérer l'handicap start d'un athlète
     public function getHandicapTime()
     {
-        $query = 'SELECT `LR_handicap` FROM ' . $this->tablename . ' WHERE id = :id';
+        $query =
+            'SELECT `LR_handicap` FROM ' . $this->tablename . ' WHERE id = :id';
         $handicapResult = $this->db->prepare($query);
         $handicapResult->bindValue(':id', $this->id, PDO::PARAM_INT);
         if ($handicapResult->execute()) {
@@ -429,10 +473,11 @@ class athlete extends database
         }
         return $handicapResultList;
     }
-// Méthode pour récupérer les détails de la catégorie d'un athlète
+    // Méthode pour récupérer les détails de la catégorie d'un athlète
     public function getAthCatDetailsById($id)
     {
-        $query = 'SELECT
+        $query =
+            'SELECT
         ath.`id`,
         ath.`first_name`,
         ath.`last_name`,
@@ -447,20 +492,25 @@ class athlete extends database
         `categories`.`lr_distance`,
         `categories`.`lr_ptsPerSec`
         FROM
-        ' . $this->tablename . ' AS ath
+        ' .
+            $this->tablename .
+            ' AS ath
         INNER JOIN `categories` ON ath.`cat_id` = `categories`.`cat_id`
         WHERE
-        id = ' . $id . '';
+        id = ' .
+            $id .
+            '';
         $getCatDetails = $this->db->query($query);
         if (is_object($getCatDetails)) {
             $catDetails = $getCatDetails->fetch(PDO::FETCH_ASSOC);
         }
         return $catDetails;
     }
-// Methode pour récupérer toutes les filles séparées dans leurs catégories respectives
+    // Methode pour récupérer toutes les filles séparées dans leurs catégories respectives
     public function getGirlsCat($dist)
     {
-        $query = 'SELECT
+        $query =
+            'SELECT
         ath.`id`,
         ath.`first_name`,
         ath.`last_name`,
@@ -473,19 +523,24 @@ class athlete extends database
         `categories`.`cat_id`,
         `categories`.`cat_name`,
         `categories`.`distance`
-        FROM ' . $this->tablename . ' AS ath
+        FROM ' .
+            $this->tablename .
+            ' AS ath
         INNER JOIN `categories` ON ath.`cat_id` = `categories`.`cat_id`
-        WHERE ath.`gender` = 0 AND `categories`.`distance` = ' . $dist . ' AND ath.`type_id` = 1';
+        WHERE ath.`gender` = 0 AND `categories`.`distance` = ' .
+            $dist .
+            ' AND ath.`type_id` = 1';
         $getGirlsCat = $this->db->query($query);
         if (is_object($getGirlsCat)) {
             $girlList = $getGirlsCat->fetchAll(PDO::FETCH_ASSOC);
         }
         return $girlList;
     }
-// Idem mais pour les garçons
+    // Idem mais pour les garçons
     public function getBoysCat($dist)
     {
-        $query = 'SELECT
+        $query =
+            'SELECT
         ath.`id`,
         ath.`first_name`,
         ath.`last_name`,
@@ -498,19 +553,24 @@ class athlete extends database
         `categories`.`cat_id`,
         `categories`.`cat_name`,
         `categories`.`distance`
-        FROM ' . $this->tablename . ' AS ath
+        FROM ' .
+            $this->tablename .
+            ' AS ath
         INNER JOIN `categories` ON ath.`cat_id` = `categories`.`cat_id`
-        WHERE ath.`gender` = 1 AND `categories`.`distance` = ' . $dist . ' AND ath.`type_id` = 1';
+        WHERE ath.`gender` = 1 AND `categories`.`distance` = ' .
+            $dist .
+            ' AND ath.`type_id` = 1';
         $getBoysCat = $this->db->query($query);
         if (is_object($getBoysCat)) {
             $boyList = $getBoysCat->fetchAll(PDO::FETCH_ASSOC);
         }
         return $boyList;
     }
-// Méthode pour récupérer les résultats totaux d'un athlète
+    // Méthode pour récupérer les résultats totaux d'un athlète
     public function getAthResults()
     {
-        $query = 'SELECT
+        $query =
+            'SELECT
         ath.`id`,
         ath.`first_name`,
         ath.`last_name`,
@@ -533,7 +593,9 @@ class athlete extends database
         lr.`fouls_id`,
         `categories`.`cat_name`
         FROM
-        ' . $this->tablename . ' AS ath
+        ' .
+            $this->tablename .
+            ' AS ath
         INNER JOIN `swimming` AS swi
         ON
             ath.`id` = swi.`ath_id`
@@ -551,74 +613,164 @@ class athlete extends database
         }
         return $athResultList;
     }
-// Méthode pour récupérer les athlètes inscrit pour le Laser Run
-    public function getTheRestofAth()
+    // Méthode pour récupérer les athlètes inscrit pour le Laser Run
+    public function getLaserRunNotTriAth()
     {
         $query = 'SELECT
-        `id`,
-        `first_name`,
-        `last_name`,
-        `club`,
-        `gender`,
-        `cat_id`,
-        `type_id`,
-        `swimTime`,
-        `LR_handicap`
+        ath.`id`,
+        ath.`first_name`,
+        ath.`last_name`,
+        ath.`club`,
+        ath.`gender`,
+        ath.`cat_id`,
+        ath.`type_id`,    
+        `categories`.`cat_id`,
+        `categories`.`cat_name`,
+        `categories`.`distance`,
+        `categories`.`time`,
+        `categories`.`ptsPerSec`,
+        `categories`.`points`,
+        `categories`.`lr_points`,
+        `categories`.`lr_time`,
+        `categories`.`lr_distance`,
+        `categories`.`lr_ptsPerSec`
         FROM
-        `athletes`
+        ' .
+            $this->tablename .
+            ' AS ath
+        INNER JOIN `categories` ON ath.`cat_id` = `categories`.`cat_id`
         WHERE
-        `type_id` = 2 AND gender = :gender';
-        $restOfAth = $this->db->prepare($query);
-        $restOfAth->bindValue(':gender', $this->gender, PDO::PARAM_INT);
-        if ($restOfAth->execute()) {
-            $restOfAthList = $restOfAth->fetchAll(PDO::FETCH_OBJ);
+        `type_id` = 2 AND `gender` = :gender';
+        $getLaserRunNotTriAth = $this->db->prepare($query);
+        $getLaserRunNotTriAth->bindValue(':gender', $this->gender, PDO::PARAM_INT);
+        if ($getLaserRunNotTriAth->execute()) {
+            $getLaserRunNotTriAthList = $getLaserRunNotTriAth->fetchAll(PDO::FETCH_OBJ);
         }
-        return $restOfAthList;
+        return $getLaserRunNotTriAthList;
     }
-// Méthode pour vérifier si l'athlète existe
+
+    public function getLRSavedResultsByCategoriesMethod()
+    {
+        $query = 'SELECT
+        lr.`id`,
+        lr.`time`,
+        lr.`ath_id`,
+        lr.`heat`,
+        lr.`points` AS points,
+        ath.`id` AS ath_id,
+        ath.`first_name`,
+        ath.`last_name`,
+        ath.`club`,
+        ath.`cat_id`,
+        ath.`type_id`,
+        ath.`gender`,
+        ath.`lr_handicap`,
+        cat.`cat_id`,
+        cat.`lr_distance`,
+        cat.`lr_turns`,
+        cat.`lr_time`,
+        cat.`cat_name`
+        FROM
+        ' .
+                $this->tablename .
+                ' AS ath
+        INNER JOIN `laserrun` AS lr
+        ON
+            lr.`ath_id` = ath.`id`
+        INNER JOIN `categories` AS cat
+        ON
+            ath.`cat_id` = cat.`cat_id`
+        WHERE
+        ath.`gender` = :gender AND ath.`cat_id` = :cat_id AND ath.`type_id` = 2 ORDER BY lr.`points` DESC';
+        $getLRSavedResultsByCategories = $this->db->prepare($query);
+        $getLRSavedResultsByCategories->bindValue(':gender', $this->gender, PDO::PARAM_INT);
+        $getLRSavedResultsByCategories->bindValue(':cat_id', $this->cat_id, PDO::PARAM_INT);
+        if ($getLRSavedResultsByCategories->execute()) {
+            $getLRSavedResultsByCategoriesList = $getLRSavedResultsByCategories->fetchAll(PDO::FETCH_ASSOC);
+        }
+        return $getLRSavedResultsByCategoriesList;
+    }
+
+    public function countLRAth()
+    {
+        $query = 'SELECT
+        COUNT(`type_id`)
+        FROM
+            ' .
+                    $this->tablename .
+                    '
+        WHERE
+        type_id = 2';
+        $countAth = $this->db->query($query);
+        if (is_object($countAth)) {
+            $athAmount = $countAth->fetchColumn();
+        }
+        return $athAmount;
+    }
+    // Méthode pour vérifier si l'athlète existe
     public function checkIfAth()
     {
-        $query = 'SELECT
+        $query =
+            'SELECT
         COUNT(1)
         FROM
-        ' . $this->tablename . '';
+        ' .
+            $this->tablename .
+            '';
         $athOrNot = $this->db->query($query);
         if (is_object($athOrNot)) {
             $athOrNotResult = $athOrNot->fetchAll(PDO::FETCH_ASSOC);
         }
         return $athOrNotResult;
     }
-// Méthode pour mettre à jour le prénom d'un athlète
+    // Méthode pour mettre à jour le prénom d'un athlète
     public function updateFirstName()
     {
-        $query = 'UPDATE
-        ' . $this->tablename . '
+        $query =
+            'UPDATE
+        ' .
+            $this->tablename .
+            '
         SET
             `first_name`= :first_name
             WHERE id = :id';
         $updateFirstName = $this->db->prepare($query);
         $updateFirstName->bindValue(':id', $this->id, PDO::PARAM_INT);
-        $updateFirstName->bindValue(':first_name', $this->first_name, PDO::PARAM_STR);
+        $updateFirstName->bindValue(
+            ':first_name',
+            $this->first_name,
+            PDO::PARAM_STR
+        );
         return $updateFirstName->execute();
     }
-// Méthode pour mettre à jour le nom de famille d'un athlète
+    // Méthode pour mettre à jour le nom de famille d'un athlète
     public function updateLastName()
     {
-        $query = 'UPDATE
-        ' . $this->tablename . '
+        $query =
+            'UPDATE
+        ' .
+            $this->tablename .
+            '
         SET
             `last_name`= :last_name
             WHERE id = :id';
         $updateLastName = $this->db->prepare($query);
         $updateLastName->bindValue(':id', $this->id, PDO::PARAM_INT);
-        $updateLastName->bindValue(':last_name', $this->last_name, PDO::PARAM_STR);
+        $updateLastName->bindValue(
+            ':last_name',
+            $this->last_name,
+            PDO::PARAM_STR
+        );
         return $updateLastName->execute();
     }
-// Méthode pour mettre à jour le club d'un athlète
+    // Méthode pour mettre à jour le club d'un athlète
     public function updateClub()
     {
-        $query = 'UPDATE
-        ' . $this->tablename . '
+        $query =
+            'UPDATE
+        ' .
+            $this->tablename .
+            '
         SET
             `club`= :club
             WHERE id = :id';
@@ -627,11 +779,14 @@ class athlete extends database
         $updateClub->bindValue(':club', $this->club, PDO::PARAM_STR);
         return $updateClub->execute();
     }
-// Méthode pour mettre à jour le sexe d'un athlète
+    // Méthode pour mettre à jour le sexe d'un athlète
     public function updateGender()
     {
-        $query = 'UPDATE
-        ' . $this->tablename . '
+        $query =
+            'UPDATE
+        ' .
+            $this->tablename .
+            '
         SET
             `gender`= :gender
             WHERE id = :id';
@@ -640,11 +795,14 @@ class athlete extends database
         $updateGender->bindValue(':gender', $this->gender, PDO::PARAM_INT);
         return $updateGender->execute();
     }
-// Méthode pour mettre à jour le type de compétition auquel l'athlète s'est inscrit
+    // Méthode pour mettre à jour le type de compétition auquel l'athlète s'est inscrit
     public function updateType()
     {
-        $query = 'UPDATE
-        ' . $this->tablename . '
+        $query =
+            'UPDATE
+        ' .
+            $this->tablename .
+            '
         SET
             `type_id`= :type_id
             WHERE id = :id';
@@ -653,11 +811,14 @@ class athlete extends database
         $updateType->bindValue(':type_id', $this->type_id, PDO::PARAM_INT);
         return $updateType->execute();
     }
-// Méthode pour mettre à jour la catégorie d'un athlète
+    // Méthode pour mettre à jour la catégorie d'un athlète
     public function updateCategory()
     {
-        $query = 'UPDATE
-        ' . $this->tablename . '
+        $query =
+            'UPDATE
+        ' .
+            $this->tablename .
+            '
         SET
             `cat_id`= :cat_id
             WHERE id = :id';
@@ -666,29 +827,43 @@ class athlete extends database
         $updateCategory->bindValue(':cat_id', $this->cat_id, PDO::PARAM_INT);
         return $updateCategory->execute();
     }
-// Méthode pour mettre à jour le temps d'engagement d'un athlète
+    // Méthode pour mettre à jour le temps d'engagement d'un athlète
     public function updateSwimTime()
     {
-        $query = 'UPDATE
-        ' . $this->tablename . '
+        $query =
+            'UPDATE
+        ' .
+            $this->tablename .
+            '
         SET
             `swimTime`= :swimTime
             WHERE id = :id';
         $updateSwimTime = $this->db->prepare($query);
         $updateSwimTime->bindValue(':id', $this->id, PDO::PARAM_INT);
-        $updateSwimTime->bindValue(':swimTime', $this->swimTime, PDO::PARAM_INT);
+        $updateSwimTime->bindValue(
+            ':swimTime',
+            $this->swimTime,
+            PDO::PARAM_INT
+        );
         return $updateSwimTime->execute();
     }
-// Méthode pour mettre à jour le handicap start d'un athlète
+    // Méthode pour mettre à jour le handicap start d'un athlète
     public function updateAthHandicapTime()
     {
-        $query = 'UPDATE ' . $this->tablename . ' SET `LR_handicap`= :LR_handicap WHERE id= :id';
+        $query =
+            'UPDATE ' .
+            $this->tablename .
+            ' SET `LR_handicap`= :LR_handicap WHERE id= :id';
         $updateHandicapTime = $this->db->prepare($query);
         $updateHandicapTime->bindValue(':id', $this->id, PDO::PARAM_INT);
-        $updateHandicapTime->bindValue(':LR_handicap', $this->LR_handicap, PDO::PARAM_STR);
+        $updateHandicapTime->bindValue(
+            ':LR_handicap',
+            $this->LR_handicap,
+            PDO::PARAM_STR
+        );
         return $updateHandicapTime->execute();
     }
-// Méthode pour supprimer un athlète
+    // Méthode pour supprimer un athlète
     public function removeAth()
     {
         $query = 'DELETE FROM ' . $this->tablename . ' WHERE id = :id';

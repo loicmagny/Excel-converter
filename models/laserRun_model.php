@@ -7,7 +7,6 @@ class laserRun extends dataBase
     private $points = 0;
     private $ath_id = 0;
     private $heats = 0;
-    private $arrival = 0;
     private $fouls = '';
     private $tablename = 'laserrun';
 
@@ -118,25 +117,6 @@ class laserRun extends dataBase
         return $this;
     }
 
-    /**
-     * Get the value of arrival
-     */
-    public function getArrival()
-    {
-        return $this->arrival;
-    }
-
-    /**
-     * Set the value of arrival
-     *
-     * @return  self
-     */
-    public function setArrival($arrival)
-    {
-        $this->arrival = $arrival;
-
-        return $this;
-    }
 
     /**
      * Get the value of fouls
@@ -164,17 +144,16 @@ class laserRun extends dataBase
     // Méthode permettant d'enregistrer un résultat de combiné dans la bdd
     public function createLRAthleteResult()
     {
-        $query = 'INSERT INTO ' . $this->tablename . ' (`time`, `ath_id`, `points`,`arrival`, `heat`) VALUES (:time, :ath_id,:points, :arrival, :heat)';
+        $query = 'INSERT INTO ' . $this->tablename . ' (`time`, `ath_id`, `points`, `heat`) VALUES (:time, :ath_id,:points, :heat)';
         $createLRAthleteResult = $this->db->prepare($query);
         $createLRAthleteResult->bindValue(':time', $this->time, PDO::PARAM_STR);
         $createLRAthleteResult->bindValue(':ath_id', $this->ath_id, PDO::PARAM_INT);
         $createLRAthleteResult->bindValue(':points', $this->points, PDO::PARAM_INT);
-        $createLRAthleteResult->bindValue(':arrival', $this->arrival, PDO::PARAM_INT);
         $createLRAthleteResult->bindValue(':heat', $this->heats, PDO::PARAM_INT);
         return $createLRAthleteResult->execute();
     }
 
-// Méthode permettant de récupérer les résultats du combiné stockés en bdd
+    // Méthode permettant de récupérer les résultats du combiné stockés en bdd
     public function getLRSavedResults($gender)
     {
         $query = 'SELECT
@@ -183,7 +162,6 @@ class laserRun extends dataBase
         lr.`ath_id`,
         lr.`heat`,
         lr.`points` as points,
-        lr.`arrival`,
         ath.`id` AS ath_id,
         ath.`first_name`,
         ath.`last_name`,
@@ -213,12 +191,54 @@ class laserRun extends dataBase
         }
         return $timeList;
     }
-// Méthode permettant de mettre à jour le temps du combiné d'un athlète
+
+    public function getAthLrResults()
+    {
+        $query = 'SELECT
+        lr.`id`,
+        lr.`time`,
+        lr.`ath_id`,
+        lr.`heat`,
+        lr.`points` as points,
+        ath.`id` AS ath_id,
+        ath.`first_name`,
+        ath.`last_name`,
+        ath.`club`,
+        ath.`cat_id`,
+        ath.`type_id`,
+        ath.`gender`,
+        ath.`lr_handicap`,
+        cat.`cat_id`,
+        cat.`lr_distance`,
+        cat.`lr_turns`,
+        cat.`lr_time`,
+        cat.`cat_name`
+        FROM
+        ' . $this->tablename . ' AS lr
+        INNER JOIN `athletes` AS ath
+        ON
+            lr.`ath_id` = ath.`id`
+        INNER JOIN `categories` AS cat
+        ON
+            ath.`cat_id` = cat.`cat_id`
+        WHERE
+            lr.`ath_id` = :ath_id';
+        $getAthLrResults = $this->db->prepare($query);
+        $getAthLrResults->bindValue(':ath_id', $this->ath_id, PDO::PARAM_INT);
+        if ($getAthLrResults->execute()) {
+            $getAthLrResultsList = $getAthLrResults->fetch(PDO::FETCH_OBJ);
+        }
+        return $getAthLrResultsList;
+    }
+
+
+    // Méthode permettant de mettre à jour le temps du combiné d'un athlète
     public function updateAthTime()
     {
-        $query = 'UPDATE ' . $this->tablename . ' SET `time`= :time WHERE `ath_id` = :ath_id';
+        $query = 'UPDATE ' . $this->tablename . ' SET `time`= :time, `points` = :points WHERE `ath_id` = :ath_id';
         $updateAthTime = $this->db->prepare($query);
         $updateAthTime->bindValue(':time', $this->time, PDO::PARAM_STR);
+        $updateAthTime->bindValue(':points', $this->points, PDO::PARAM_STR);
         $updateAthTime->bindValue(':ath_id', $this->ath_id, PDO::PARAM_INT);
         return $updateAthTime->execute();
     }
@@ -230,15 +250,6 @@ class laserRun extends dataBase
         $updateAthPoints->bindValue(':points', $this->points, PDO::PARAM_INT);
         $updateAthPoints->bindValue(':ath_id', $this->ath_id, PDO::PARAM_INT);
         return $updateAthPoints->execute();
-    }
-// Idem mais pour la place d'arrivée
-    public function updateAthArrival()
-    {
-        $query = 'UPDATE ' . $this->tablename . ' SET `arrival`= :arrival WHERE `ath_id` = :ath_id';
-        $updateAthArrival = $this->db->prepare($query);
-        $updateAthArrival->bindValue(':arrival', $this->arrival, PDO::PARAM_INT);
-        $updateAthArrival->bindValue(':ath_id', $this->ath_id, PDO::PARAM_INT);
-        return $updateAthArrival->execute();
     }
 
     public function __destruct()
