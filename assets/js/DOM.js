@@ -297,6 +297,7 @@ function generateSwimmingBoard(data, gender) {
 function generateLaserRunBoard(data, gender) {
 	let l = 1;
 	let k = 1;
+	console.log(data);
 	for (let i = 1; i < data.length + 1; i++) {
 		$('#' + gender + 'sHeats').append(
 			'<li>' +

@@ -72,7 +72,7 @@ if ($(location).attr('href') == LASERRUN) {
 
     if (datas.length > 20) {
       var size = datas.length;
-      var _x = 2;
+      var _x = 1;
 
       for (var _i = 1; _i <= size; _i++) {
         if (size <= 20) {
@@ -92,7 +92,8 @@ if ($(location).attr('href') == LASERRUN) {
           if (_j < splitted[_i2.length]) {
             splitted[_i2][_j] = datas[_j];
           } else {
-            splitted[_i2][_j] = datas[parseInt(_j + splitted.length * _i2)];
+            console.log(_j + splitted[_i2].length * _i2);
+            splitted[_i2][_j] = datas[parseInt(_j + splitted[_i2].length * _i2)];
           }
         }
       }

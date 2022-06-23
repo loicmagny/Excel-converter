@@ -42,6 +42,7 @@ function generateSwimmingBoard(data, gender) {
 function generateLaserRunBoard(data, gender) {
   var l = 1;
   var k = 1;
+  console.log(data);
 
   for (var _i2 = 1; _i2 < data.length + 1; _i2++) {
     $('#' + gender + 'sHeats').append('<li>' + '<div class="collapsible-header heat" id="heat_' + _i2 + '_' + gender + 's"><i class="material-icons"><img src="https://img.icons8.com/ios-glyphs/24/000000/male.png"/></i>Série ' + _i2 + ' -&nbsp; <span id="' + gender + 'sHeatDistance' + _i2 + '"> </span></div>' + '<div class="collapsible-body" id="heat_' + _i2 + '_' + gender + 's_content">' + '<table id="' + gender + 'sTable_' + _i2 + '">' + '<thead>' + '<tr>' + '<th class="center">Poste de tir</th>' + '<th class="center">Catégorie</th>' + '<th class="center">Nom</th>' + '<th class="center">Temps</th>' + '<th class="center">Points</th>' + '<th class="center" id="actions' + '">Actions</th>' + '</tr>' + '</thead>' + '<tbody id="' + gender + 'sTable_' + _i2 + '_content">' + '</tbody>' + '</table>' + '</div>' + '</li>' + '</ul>');
